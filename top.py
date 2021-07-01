@@ -52,9 +52,6 @@ def split_load_img(path, x, y, width, height):
 
 
 def main():
-    map = WorldMap('Map_data/world Map1/world_map_data..csv')
-    map.map_data()
-
     pygame.init()
     font = pygame.font.Font('font_data/misaki_gothic_2nd.ttf', 20)
     font.set_bold(True)
@@ -77,11 +74,8 @@ def main():
     auth_font = pygame.font.SysFont("hg正楷書体pro", 20)
     auth_caption = pygame.Rect(0, 600, width, height-600)
     caption = auth_font.render("Copyright 2021-06-23 チームたんじろう all rights reserved", True, (0,0,0))
-    WorldMap.imgs[9] = load_img('images/useing/20100807173319.png')
-    WorldMap.imgs[2] = load_img('images/useing/grass.png')
-    WorldMap.imgs[4] = load_img('images/useing/tuti1-tuti3.png')
-    map = WorldMap('Map_data/world Map1/world_map_data..csv')
-    map.draw(screen)
+    mixer.init(frequency = 44100)
+    mixer.music.load('sounds/OpeningThema/魔王魂  ファンタジー06.mp3') #BGM
     #タイトルウィンドウ表示
     title_page = True
     corse_select = False
@@ -124,6 +118,10 @@ def main():
     
     #ワールドマップ画面
     #必要なオブジェクトを定義
+    WorldMap.imgs[9] = load_img('images/useing/20100807173319.png')
+    WorldMap.imgs[2] = load_img('images/useing/grass.png')
+    WorldMap.imgs[4] = load_img('images/useing/tuti1-tuti3.png')
+    map = WorldMap('Map_data/world Map1/world_map_data..csv')
     button = Button()
     course1_btn_point = (40, 500, 200, 50)
     course2_btn_point = (80, 420, 200, 50)

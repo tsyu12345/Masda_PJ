@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
-from pygame import mixer
+from playsound import playsound
+import threading as th 
 import sys
 import csv
 
@@ -74,8 +75,13 @@ def main():
     auth_font = pygame.font.SysFont("hg正楷書体pro", 20)
     auth_caption = pygame.Rect(0, 600, width, height-600)
     caption = auth_font.render("Copyright 2021-06-23 チームたんじろう all rights reserved", True, (0,0,0))
-    mixer.init(frequency = 44100)
-    mixer.music.load('sounds/OpeningThema/魔王魂  ファンタジー06.mp3') #BGM
+    """
+    pygame.mixer.init()
+    pygame.mixer.music.load('sounds/OpeningThema/魔王魂  8bit25.ogg') #BGM
+    pygame.mixer.music.play(-1)
+    """
+    th1 = th.Thread(target=playsound, args=(['sounds/OpeningThema/8bit03.mp3']), daemon=True)
+    th1.start()
     #タイトルウィンドウ表示
     title_page = True
     corse_select = False
@@ -92,7 +98,6 @@ def main():
         #著作権表示
         pygame.draw.rect(screen, (20, 200, 20), auth_caption)
         screen.blit(caption, (100+20, 600+15))
-        
         pygame.display.update()
         # イベント処理
         for event in pygame.event.get():
@@ -108,11 +113,13 @@ def main():
                 if start.collidepoint(event.pos):
                     #ここにその後の処理を追加
                     print("start button pressed!!")
+                    playsound('sounds/clickSound/systen41.mp3')
                     corse_select = True
                     title_page = False
-
+    
                 elif end.collidepoint(event.pos):
                     print("end button presssed!!")
+                    playsound('sounds/clickSound/systen40.mp3')
                     pygame.quit()
                     sys.exit()
     
@@ -135,6 +142,8 @@ def main():
     c2_btn = button.btn_init(course2_btn_point)
     c3_btn = button.btn_init(course3_btn_point)
     c4_btn = button.btn_init(course4_btn_point)
+    e_btn_point = (600, 500, 100, 50)
+    end = button.btn_init(e_btn_point)
     while corse_select:
         pygame.init()
         screen.fill((0, 0, 0))
@@ -143,6 +152,9 @@ def main():
         pygame.draw.rect(screen, (255, 255,255), c2_btn, 6)
         pygame.draw.rect(screen, (255, 255,255), c3_btn, 6)
         pygame.draw.rect(screen, (255, 255,255), c4_btn, 6)
+        pygame.draw.rect(screen, (255, 255,255), end, 6)
+        #以下はボタンテキストの描画screen.blit(btnObject, (x, y))
+        pygame.draw.rect(screen, (0, 0, 0), end)
         pygame.draw.rect(screen, (0, 0, 0), c1_btn)#ボタン本体
         pygame.draw.rect(screen, (0, 0, 0), c2_btn)
         pygame.draw.rect(screen, (0, 0, 0), c3_btn)
@@ -151,6 +163,7 @@ def main():
         screen.blit(c2_text, (course2_btn_point[0] + 50 , course2_btn_point[1] + 15))
         screen.blit(c3_text, (course3_btn_point[0] + 50 , course3_btn_point[1] + 15))
         screen.blit(c4_text, (course4_btn_point[0] + 50 , course4_btn_point[1] + 15))
+        screen.blit(e_text, (e_btn_point[0] + 20, e_btn_point[1] + 15))
         pygame.display.update()
 
         for event in pygame.event.get():
@@ -165,16 +178,23 @@ def main():
                 if c1_btn.collidepoint(event.pos):
                     #ここにその後の処理を追加
                     print("チュートリアル button pressed!!")
+                    playsound('sounds/clickSound/systen41.mp3')
                 if c2_btn.collidepoint(event.pos):
                     #ここにその後の処理を追加
                     print("初級コース button pressed!!")
+                    playsound('sounds/clickSound/systen41.mp3')
                 if c3_btn.collidepoint(event.pos):
                     #ここにその後の処理を追加
                     print("中級コース button pressed!!")
+                    playsound('sounds/clickSound/systen41.mp3')
                 if c4_btn.collidepoint(event.pos):
                     #ここにその後の処理を追加
                     print("上級コース button pressed!!")
-                    
+                    playsound('sounds/clickSound/systen41.mp3')
+                if end.collidepoint(event.pos):
+                    playsound('sounds/clickSound/systen40.mp3')
+                    pygame.quit()
+                    sys.exit() 
    
 if __name__ == "__main__":
     main()

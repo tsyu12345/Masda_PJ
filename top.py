@@ -127,10 +127,10 @@ def main():
         
         #ワールドマップ画面
         #必要なオブジェクトを定義
-        WorldMap.imgs[9] = load_img('images/useing/20100807173319.png')
-        WorldMap.imgs[2] = load_img('images/useing/grass.png')
-        WorldMap.imgs[4] = load_img('images/useing/tuti1-tuti3.png')
-        map = WorldMap('Map_data/world Map1/world_map_data..csv')
+        #WorldMap.imgs[9] = load_img('images/useing/20100807173319.png')
+        #WorldMap.imgs[2] = load_img('images/useing/grass.png')
+        #WorldMap.imgs[4] = load_img('images/useing/tuti1-tuti3.png')
+        #map = WorldMap('Map_data/world Map1/world_map_data..csv')
         button = Button()
         course1_btn_point = (40, 500, 200, 50)
         course2_btn_point = (80, 420, 200, 50)
@@ -150,7 +150,7 @@ def main():
         while corse_select:
             pygame.init()
             screen.fill((0, 0, 0))
-            map.draw(screen)
+            #map.draw(screen)
             pygame.draw.rect(screen, (255, 255,255), c1_btn, 6) #縁
             pygame.draw.rect(screen, (255, 255,255), c2_btn, 6)
             pygame.draw.rect(screen, (255, 255,255), c3_btn, 6)

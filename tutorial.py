@@ -38,6 +38,23 @@ def main():
     bad = False
     op_end = False
     end = False
+    first_story = False
+    #以下本編用
+    story_text = [
+        "時は20XX年。",
+        "人類はパソコンを発明した。",
+        "人々はそれを当たり前のように使いこなした。",
+        "そんな世界にとつぜん「魔王、北原」が現れた。",
+        "北原は魔物たちを世界にバラマキ、人々を脅かし始めた。",
+        "北原は「自分よりタイピングが上手い奴を連れてこい」と人々に警告した。"
+        "これまで何人もの勇敢な者が北原に立ち向かったが誰も北原に勝つことは出来なかった。",
+        "そんな中ある少年が立ち上がった。彼の名はマスダ。",
+    ]
+    story_render = font.render("", True, (255, 255,255))
+    posx = 70
+    posy = 410
+    s_i = 0
+    label = []
 
     while tutorial:
         if bad_cnt == 3:
@@ -65,6 +82,8 @@ def main():
                     sys.exit()
                 if event.type == KEYDOWN:  # キーEvent
                     if pygame.key.name(event.key) == "y":
+                        first_story = True
+                        first_select = False
                         print("yes pressed")
 
                     elif pygame.key.name(event.key) == "n":
@@ -141,17 +160,38 @@ def main():
             counter += 1
             text_render = font.render(text[0:counter], True, (255, 255, 255))
             if counter == len(text) + 5:
-                pygame.quit()
                 #その後のチュートリアルの処理
-                
-            if event.type == QUIT:          # 閉じるボタンが押されたとき
-                pygame.quit()
-                sys.exit()
-            if event.type == KEYDOWN:  # キーEvent
-                if event.key == K_ESCAPE:   # Escキーが押されたとき
+                first_story = True
+                end = False
+            for event in pygame.event.get():
+                if event.type == QUIT:          # 閉じるボタンが押されたとき
                     pygame.quit()
                     sys.exit()
-    
+                if event.type == KEYDOWN:  # キーEvent
+                    if event.key == K_ESCAPE:   # Escキーが押されたとき
+                        pygame.quit()
+                        sys.exit()
+            
+        while first_story:
+            pygame.draw.rect(screen, (0, 0, 0), Rect(0, 0, width, height))
+            pygame.draw.rect(screen, (255, 255, 255), msg_box, 6)  # 縁
+            pygame.draw.rect(screen, (0, 0, 0), msg_box)  # メッセージボックス
+            pygame.time.wait(80)
+            story_render = font.render(story_text[s_i], True, (255, 255, 255))
+            screen.blit(story_render, (posx, posy))
+            pygame.display.update()
+
+            for event in pygame.event.get():
+                if event.type == QUIT:          # 閉じるボタンが押されたとき
+                    pygame.quit()
+                    sys.exit()
+                if event.type == KEYDOWN:  # キーEvent
+                    if event.key == K_ESCAPE:   # Escキーが押されたとき
+                        pygame.quit()
+                        sys.exit()
+                    if event.key == K_RETURN:
+                        s_i += 1
+                        story_render = font.render(story_text[s_i], True, (255, 255, 255))
 
 if __name__ == "__main__":
     main()

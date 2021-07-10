@@ -211,19 +211,8 @@ def main():
                         except IndexError:
                             first_story = False
                             tutorial = False
-                            play_tutorial = True
-    pygame.init()
-    font = pygame.font.Font(
-        'font_data/PixelMplus-20130602/PixelMplus10-Regular.ttf', 26)
-    font.set_bold(True)
-    width = 800  # screeen
-    height = 640
-    pygame.display.set_mode((width, height), 0, 32)
-    screen = pygame.display.get_surface()
-    pygame.display.set_caption("マス打")
-    #while play_tutorial:
-
-        
+                            #play_tutorial = True
+                            pygame.quit()
     
 
 if __name__ == "__main__":

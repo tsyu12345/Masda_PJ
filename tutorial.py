@@ -18,8 +18,6 @@ def main():
     screen = pygame.display.get_surface()
     pygame.display.set_caption("マス打")
     # 必要なオブジェクト（部品）を以下へ
-    tutorial = True
-    first_select = True
     start_text = "ぼうけんをはじめますか？"
     y_n_text = "Y/N ??:選択するにはどれかキーを押してください。_"
     text_render = font.render("", True, (255, 255, 255))
@@ -35,22 +33,32 @@ def main():
     counter = 0
     bd_t_cnt = 0
     bad_cnt = 0
+    #状態遷移感知変数
+    tutorial = True
+    first_select = True
     bad = False
     op_end = False
     end = False
     first_story = False
+    play_tutorial = False
     #以下本編用
     story_text = [
         "時は20XX年。",
         "人類はパソコンを発明した。",
-        "人々はそれを当たり前のように使いこなした。",
+        "人々はそれを当たり前のように使いこなしていた。＿",
         "そんな世界にとつぜん「魔王、北原」が現れた。",
-        "北原は魔物たちを世界にバラマキ、人々を脅かし始めた。",
-        "北原は「自分よりタイピングが上手い奴を連れてこい」と人々に警告した。"
-        "これまで何人もの勇敢な者が北原に立ち向かったが誰も北原に勝つことは出来なかった。",
-        "そんな中ある少年が立ち上がった。彼の名はマスダ。",
+        "北原は魔物たちを世界にバラマキ、",
+        "人々の生活を脅かし始めた。＿",
+        "北原は「タイピングが上手い奴を連れてこい」、",
+        "と人々に警告した。",
+        "これまで何人もの勇敢な者が＿",
+        "北原に立ち向かったが誰も倒すことが出来なかった。",
+        "ある少年が立ち上がった。彼の名はマスダ。",
+        "魔王に親を殺された復習を果たすべく旅に出る。＿",
+        "あなたは、マスダとなり、",
+        "魔王を倒さなければなりません。",
+        "これからその方法を伝授します。＿"
     ]
-    story_render = font.render("", True, (255, 255,255))
     posx = 70
     posy = 410
     s_i = 0
@@ -177,9 +185,14 @@ def main():
             pygame.draw.rect(screen, (255, 255, 255), msg_box, 6)  # 縁
             pygame.draw.rect(screen, (0, 0, 0), msg_box)  # メッセージボックス
             pygame.time.wait(80)
-            story_render = font.render(story_text[s_i], True, (255, 255, 255))
-            screen.blit(story_render, (posx, posy))
+            label.append(font.render(story_text[s_i], True, (255, 255, 255)))
+            label.append(font.render(story_text[s_i+1], True, (255, 255, 255)))
+            label.append(font.render(story_text[s_i+2], True, (255, 255, 255)))
+            screen.blit(label[0], (posx, posy))
+            screen.blit(label[1], (posx,posy+40))
+            screen.blit(label[2], (posx,posy+80))
             pygame.display.update()
+
 
             for event in pygame.event.get():
                 if event.type == QUIT:          # 閉じるボタンが押されたとき
@@ -190,8 +203,28 @@ def main():
                         pygame.quit()
                         sys.exit()
                     if event.key == K_RETURN:
-                        s_i += 1
-                        story_render = font.render(story_text[s_i], True, (255, 255, 255))
+                        try:
+                            s_i += 3
+                            label[0] = font.render(story_text[s_i], True, (255, 255, 255))
+                            label[1] = font.render(story_text[s_i+1], True, (255, 255, 255))
+                            label[2] = font.render(story_text[s_i+2], True, (255, 255, 255))
+                        except IndexError:
+                            first_story = False
+                            tutorial = False
+                            play_tutorial = True
+    pygame.init()
+    font = pygame.font.Font(
+        'font_data/PixelMplus-20130602/PixelMplus10-Regular.ttf', 26)
+    font.set_bold(True)
+    width = 800  # screeen
+    height = 640
+    pygame.display.set_mode((width, height), 0, 32)
+    screen = pygame.display.get_surface()
+    pygame.display.set_caption("マス打")
+    #while play_tutorial:
+
+        
+    
 
 if __name__ == "__main__":
     main()

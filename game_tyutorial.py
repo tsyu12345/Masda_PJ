@@ -1,4 +1,7 @@
 import pygame
+from pygame.locals import *
+import pytmx
+from pytmx.util_pygame import load_pygame
 import sys
 import csv
 import os
@@ -8,10 +11,12 @@ DOWN, LEFT, RIGHT, UP = "s", "a", "d", "w"
 
 
 def load_image(filename, colorkey=None):
-    filename = os.path.join("data", filename)
     image = pygame.image.load(filename)
     image = image.convert()
     return image
+
+def mapchip_split(pixcel, path):
+    chip_img = pygame.image.load(path)
 
 
 def split_image(image):
@@ -26,31 +31,16 @@ def split_image(image):
     return imageList
 
 
-class Map:
-    imgs = [None] * 10
-
-    def __init__(self, csv_file):
-        self.csv_file = csv_file
-        self.map = self.map_data()
-        self.row, self.col = len(self.map), len(self.map[0])
-        self.msize = 16
-
-    def map_data(self):  # TiledからのCSV読み込み
-        file = open(self.csv_file, "r", encoding='ms932',
-                    errors="", newline="")
-        data = csv.reader(file, doublequote=True, lineterminator="\r\n",
-                          quotechar='"', skipinitialspace=True)
-        map = []
-        for row in data:
-            map.append(row)
-        return map
-
-    def draw(self, screen):
-        for i in range(self.row):
-            for j in range(self.col):
-                screen.blit(self.imgs[int(self.map[i][j])],
-                            (j*self.msize, i*self.msize))
-
+class Map: #Tiledからの読み込みと描画担当
+    def __init__(self, data_path):
+        self.gameMap = pytmx.load_pygame(data_path)
+    
+    def draw_map(self, screen):
+        for layer in self.gameMap.visible_layers:
+            for x, y, gid, in layer:
+                tile = self.gameMap.get_tile_image_by_gid(gid)
+                if(tile != None):
+                    screen.blit(tile, (x * self.gameMap.tilewidth, y * self.gameMap.tileheight))
 
 class Player:
     animcycle = 24  # アニメーション速度
@@ -109,13 +99,10 @@ def main():
     # 必要なオブジェクト（部品）
     play = True
     #マップチップの選択
-    Map.imgs[1] = load_image('images/Map/mapchip2_0724/mapchip2/MapChip/kusa1-tuti1.png')#クラス変数imgsの指定
-    Map.imgs[4] = load_image('images/Map/mapchip2_0724/mapchip2/MapChip/kusa1-kusa2.png')
-    map = Map('Map_data/tyutorial_map_data/tyutorial_test..csv')
-
+    map = Map('Map_data/tyutorial_test.tmx')
     while play:
-
-        map.draw(screen)
+        map.draw_map(screen)        
+        pygame.display.update()
 
         for event in pygame.event.get():
             if event.type == QUIT:          # 閉じるボタンが押されたとき

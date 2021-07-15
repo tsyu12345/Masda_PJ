@@ -4,8 +4,9 @@ from playsound import playsound
 import threading as th 
 import sys
 import csv
-import tutorial
 
+import tutorial
+import game_tyutorial
 
 
 class TitleText:
@@ -184,7 +185,10 @@ def main():
                     if c1_btn.collidepoint(event.pos):
                         #ここにその後の処理を追加
                         print("チュートリアル button pressed!!")
-                        tutorial.main()                         
+                        tutorial.main()
+                        pygame.init()
+                        
+                        game_tyutorial.main()                         
                     if c2_btn.collidepoint(event.pos):
                         #ここにその後の処理を追加
                         print("初級コース button pressed!!")

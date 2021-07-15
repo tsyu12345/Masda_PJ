@@ -6,8 +6,8 @@ import sys
 import csv
 import os
 
-GS = 16
-DOWN, LEFT, RIGHT, UP = "s", "a", "d", "w"
+GS = 32
+DOWN, LEFT, RIGHT, UP = 0,1,2,3
 
 
 def load_image(filename, colorkey=None):
@@ -15,15 +15,11 @@ def load_image(filename, colorkey=None):
     image = image.convert()
     return image
 
-def mapchip_split(pixcel, path):
-    chip_img = pygame.image.load(path)
-
-
 def split_image(image):
     """分割したイメージを格納したリストを返す"""
     imageList = []
-    for i in range(0, 80, GS):
-        for j in range(0, 80, GS):
+    for i in range(0, 128, GS):
+        for j in range(0, 128, GS):
             surface = pygame.Surface((GS, GS))
             surface.blit(image, (0, 0), (j, i, GS, GS))
             surface.convert()
@@ -32,16 +28,29 @@ def split_image(image):
 
 
 class Map: #Tiledからの読み込みと描画担当
+
+    row = 800 #map row
+    col = 640 #map column
+
     def __init__(self, data_path):
         self.gameMap = pytmx.load_pygame(data_path)
-    
+
     def draw_map(self, screen):
         for layer in self.gameMap.visible_layers:
             for x, y, gid, in layer:
                 tile = self.gameMap.get_tile_image_by_gid(gid)
                 if(tile != None):
                     screen.blit(tile, (x * self.gameMap.tilewidth, y * self.gameMap.tileheight))
-
+    
+    def is_movable(self, x, y): #マップの移動可否判定
+        """(x,y)は移動可能か？"""
+        # マップ範囲内か？
+        if x < 0 or x > self.col-1 or y < 0 or y > self.row-1:
+            return False
+        # マップチップは移動可能か？
+        if self.map[y][x] == 1:  # 水は移動できない
+            return False
+        return True
 class Player:
     animcycle = 24  # アニメーション速度
     frame = 0
@@ -89,7 +98,7 @@ class Player:
 
 def main():
     pygame.init()
-    font = pygame.font.Font('font_data/misaki_gothic_2nd.ttf', 20)
+    font = pygame.font.Font('font_data/misaki_gothic_2nd.ttf', 25)
     font.set_bold(True)
     width = 800  # screeen
     height = 640
@@ -98,12 +107,39 @@ def main():
     pygame.display.set_caption("マス打")
     # 必要なオブジェクト（部品）
     play = True
-    #マップチップの選択
+    #player オブジェクト(仮)
+    player_imgs = split_image(load_image('images/Characters/hero/pipo-charachip027c.png'))
+    direction = DOWN
+    player_x, player_y = 1,1
+    animcycle = 24
+    frame = 0
+    clock = pygame.time.Clock()
+    
+    #マップオブジェクト
     map = Map('Map_data/tyutorial_test.tmx')
+    
+    #メッセージボックス
+    start_text = "→、←、↑、↓で動くぞ！！"
+    text_render = font.render("", True, (255, 255, 255))
+    msg_box_point = (50, 400, 700, 150)
+    msg_box = pygame.Rect(msg_box_point[0], msg_box_point[1], msg_box_point[2], msg_box_point[3])
+    
     while play:
-        map.draw_map(screen)        
+        clock.tick(60)
+        frame += 1
+        player_img = player_imgs[int(direction*4 + frame/animcycle%4)]
+        map.draw_map(screen)
+        screen.blit(player_img, (player_x*GS, player_y*GS))
+        pygame.draw.rect(screen, (255, 255, 255), msg_box, 6)  # 縁
+        pygame.draw.rect(screen, (0, 0, 0), msg_box)  # メッセージボックス
+        screen.blit(text_render, (70, 410))  # メッセージの表示
+       
         pygame.display.update()
-
+        
+        #pygame.time.wait(100)
+        #pygame.time.wait(80)
+        text_render = font.render(start_text[0:int(frame/10)], True, (255, 255, 255))
+        
         for event in pygame.event.get():
             if event.type == QUIT:          # 閉じるボタンが押されたとき
                 pygame.quit()
@@ -112,6 +148,22 @@ def main():
                 if event.key == K_ESCAPE:   # Escキーが押されたとき
                     pygame.quit()
                     sys.exit()
+                if event.key == K_DOWN:
+                    direction = DOWN
+                #if is_movable(x, y+1):
+                    player_y += 1
+                if event.key == K_LEFT:
+                    direction = LEFT
+            #if is_movable(x-1, y):
+                    player_x -= 1
+                if event.key == K_RIGHT:
+                    direction = RIGHT
+            #if is_movable(x+1, y):
+                    player_x += 1
+                if event.key == K_UP:
+                    direction = UP
+            #if is_movable(x, y-1):
+                    player_y -= 1            
 
 if __name__ == "__main__":
     main()

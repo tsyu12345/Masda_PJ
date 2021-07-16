@@ -12,7 +12,7 @@ DOWN, LEFT, RIGHT, UP = 0,1,2,3
 
 def load_image(filename, colorkey=None):
     image = pygame.image.load(filename)
-    image = image.convert()
+    image = image.convert_alpha()
     return image
 
 def split_image(image):
@@ -22,8 +22,9 @@ def split_image(image):
         for j in range(0, 128, GS):
             surface = pygame.Surface((GS, GS))
             surface.blit(image, (0, 0), (j, i, GS, GS))
-            surface.convert()
+            surface.convert_alpha()
             imageList.append(surface)
+            print(imageList)
     return imageList
 
 
@@ -127,7 +128,7 @@ def main():
     while play:
         clock.tick(60)
         frame += 1
-        player_img = player_imgs[int(direction*4 + frame/animcycle%4)]
+        player_img = player_imgs[int(direction*4 + frame/animcycle%3)]
         map.draw_map(screen)
         screen.blit(player_img, (player_x*GS, player_y*GS))
         pygame.draw.rect(screen, (255, 255, 255), msg_box, 6)  # 縁

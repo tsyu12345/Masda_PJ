@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-from playsound import playsound
+#from playsound import playsound
 import threading as th 
 import sys
 import csv
@@ -187,7 +187,6 @@ def main():
                         print("チュートリアル button pressed!!")
                         tutorial.main()
                         pygame.init()
-                        
                         game_tyutorial.main()                         
                     if c2_btn.collidepoint(event.pos):
                         #ここにその後の処理を追加

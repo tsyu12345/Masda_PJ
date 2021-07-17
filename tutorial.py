@@ -212,7 +212,7 @@ def main():
                             first_story = False
                             tutorial = False
                             #play_tutorial = True
-                            pygame.quit()
+                            #pygame.quit()
     
 
 if __name__ == "__main__":

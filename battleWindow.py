@@ -3,6 +3,7 @@ import pygame
 from pygame.locals import *
 import sys
 from Button import Button
+from LocalFunc import *
 
 class Monster:
     def __init__(self, img_path:str, position:tuple, HP:int, level:int):
@@ -46,22 +47,29 @@ class TypeingGame:
         q = self.return_question(index)
         return self.q_dic[q]
 
-    def game(self, screen, index):
+    def display(self, screen, index):
         w, h = screen.get_size()
-        font = pygame.font.Font('font_data/misaki_gothic_2nd.ttf', 100)
+        pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(150, 50, 500, 200), 4)
+        font = pygame.font.SysFont("hg正楷書体pro", 100)
         font.set_bold(True)
         question = self.return_question(index)
         q_text = font.render(question, True, (255, 255, 255))
-        screen.blit(q_text, (w/2 - 40, h / 2))
+        screen.blit(q_text, (w/2-100, h/2 - 250))
         answer = self.return_ans(index)
+        font = pygame.font.SysFont("hg正楷書体pro", 50)
         ans_text = font.render(answer, True, (255, 255, 255))
-        screen.blit(ans_text, (w/2-40, h/2 + 40))
+        screen.blit(ans_text, (w/2-100 + len(answer) * 1/8, h/2-140))
+    
+    def input_word(self, event:pygame.event):
+        if event.type == KEYDOWN:          #
+            print(pygame.key.name(event.key))
+
+
+
         
 
-def load_image(filename, colorkey=None):
-    image = pygame.image.load(filename)
-    image = image.convert_alpha()
-    return image
+
+
 
 def main():
     #init pygame window
@@ -106,12 +114,13 @@ def main():
         monster.display(screen)
         aitem_btn.display(screen)
         status_bar.display(screen)
-        typeGame.game(screen, 4)
+        typeGame.display(screen, 4)
         pygame.display.update()
 
         # イベント処理
         for event in pygame.event.get():
             # 終了用のイベント処理
+            typeGame.input_word(event)
             if event.type == QUIT:          # 閉じるボタンが押されたとき
                 pygame.quit()
                 sys.exit()

@@ -35,14 +35,27 @@ class DisplayParameter:
         screen.blit(self.lv_text, (200, height-250))
 
 class TypeingGame:
-    def __init__(self, question_dic):
+    def __init__(self, question_dic:dict):
         self.q_dic = question_dic
     
-    def game(self, screen):
+    def return_question(self, index):
+        q:list = list(self.q_dic.keys())
+        return q[index]
+    
+    def return_ans(self, index):
+        q = self.return_question(index)
+        return self.q_dic[q]
+
+    def game(self, screen, index):
+        w, h = screen.get_size()
         font = pygame.font.Font('font_data/misaki_gothic_2nd.ttf', 100)
         font.set_bold(True)
-        
-        q_text = font.render()
+        question = self.return_question(index)
+        q_text = font.render(question, True, (255, 255, 255))
+        screen.blit(q_text, (w/2 - 40, h / 2))
+        answer = self.return_ans(index)
+        ans_text = font.render(answer, True, (255, 255, 255))
+        screen.blit(ans_text, (w/2-40, h/2 + 40))
         
 
 def load_image(filename, colorkey=None):
@@ -67,12 +80,33 @@ def main():
         'images/Characters/enemys/pipo-enemy46set/120x120/pipo-enemy002.png', (width / 2, height/2-100),5,1)
     aitem_btn = Button("アイテム", (255, 255, 255), (0, 0, 0), (width / 4, height-100, 100, 30))
     status_bar = DisplayParameter(10, 10)
+    dic = {
+            'RPG':"RPG",
+            '冒険':'bouken',
+            'イス':"isu",
+            '消しゴム':"kesigomu",
+            '焼肉':"yainiku",
+            '鏡':"kagami",
+            'お金':"okane",
+            'ネクタイ':"nekutai",
+            '傘':"kasa",
+            'ゴミ':"gomi",
+            'マクラ':"makura",
+            '電気':"dennki",
+            'マウス':"mausu",
+            '教科書':"kyoukasyo",
+            'うちわ':"uchiwa",
+            '帽子':"boushi",
+            '筆箱':'fudebako'            
+    }
+    typeGame = TypeingGame(dic)
     #Example
     while battle_mode:#main window loop
         pygame.draw.rect(screen, (50, 100, 50), pygame.Rect(100, 20, width-200, height-300), 1)
         monster.display(screen)
         aitem_btn.display(screen)
         status_bar.display(screen)
+        typeGame.game(screen, 4)
         pygame.display.update()
 
         # イベント処理

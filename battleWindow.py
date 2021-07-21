@@ -38,6 +38,7 @@ class DisplayParameter:
 class TypeingGame:
     def __init__(self, question_dic:dict):
         self.q_dic = question_dic
+        self.inputKey_list = []
     
     def return_question(self, index):
         q:list = list(self.q_dic.keys())
@@ -46,6 +47,9 @@ class TypeingGame:
     def return_ans(self, index):
         q = self.return_question(index)
         return self.q_dic[q]
+
+    def judge(self, chr):
+        
 
     def display(self, screen, index):
         w, h = screen.get_size()
@@ -61,8 +65,10 @@ class TypeingGame:
         screen.blit(ans_text, (w/2-100 + len(answer) * 1/8, h/2-140))
     
     def input_word(self, event:pygame.event):
-        if event.type == KEYDOWN:          #
-            print(pygame.key.name(event.key))
+        if event.type == KEYDOWN:          
+            push_key = pygame.key.name(event.key)
+            print(push_key)
+
 
 
 

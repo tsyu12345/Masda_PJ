@@ -5,9 +5,14 @@ import threading as th
 import sys
 import csv
 
+"""import game module"""
+from LoadMap import Map
+
+"""import game file"""
 import tutorial
 import game_tyutorial
 
+"""here"""
 
 class TitleText:
     def __init__(self, text, col_tuple):
@@ -22,26 +27,6 @@ class Button:
         button = pygame.Rect(point_tuple[0], point_tuple[1], point_tuple[2], point_tuple[3])
         return button 
 
-class WorldMap:
-    imgs = [None] * 10
-    def __init__(self, csv_file):
-        self.csv_file = csv_file
-        self.map = self.map_data()
-        self.row, self.col = len(self.map), len(self.map[0])
-        self.msize = 16
-    
-    def map_data(self): #TiledからのCSV読み込み
-        file = open(self.csv_file, "r", encoding='ms932', errors="", newline="")
-        data = csv.reader(file, doublequote=True, lineterminator="\r\n", quotechar='"', skipinitialspace=True)
-        map = []
-        for row in data:
-            map.append(row)
-        return map
-    
-    def draw(self, screen):
-        for i in range(self.row):
-            for j in range(self.col):
-                screen.blit(self.imgs[int(self.map[i][j])], (j*self.msize,i*self.msize))
 
 def load_img(path):
     img = pygame.image.load(path)
@@ -131,10 +116,8 @@ def main():
         
         #ワールドマップ画面
         #必要なオブジェクトを定義
-        #WorldMap.imgs[9] = load_img('images/useing/20100807173319.png')
-        #WorldMap.imgs[2] = load_img('images/useing/grass.png')
-        #WorldMap.imgs[4] = load_img('images/useing/tuti1-tuti3.png')
-        #map = WorldMap('Map_data/world Map1/world_map_data..csv')
+        map = Map('Map_data/world_map.tmx')
+
         button = Button()
         course1_btn_point = (40, 500, 200, 50)
         course2_btn_point = (80, 420, 200, 50)
@@ -154,7 +137,7 @@ def main():
         while corse_select:
             pygame.init()
             screen.fill((0, 0, 0))
-            #map.draw(screen)
+            map.draw_map(screen)
             pygame.draw.rect(screen, (255, 255,255), c1_btn, 6) #縁
             pygame.draw.rect(screen, (255, 255,255), c2_btn, 6)
             pygame.draw.rect(screen, (255, 255,255), c3_btn, 6)

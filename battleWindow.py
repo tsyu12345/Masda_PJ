@@ -48,8 +48,11 @@ class TypeingGame:
         q = self.return_question(index)
         return self.q_dic[q]
 
-    def judge(self, chr):
-        
+    def judge(self, in_chr, out_chr):
+        if in_chr == out_chr:
+            return True
+        else:
+            return False
 
     def display(self, screen, index):
         w, h = screen.get_size()
@@ -63,11 +66,13 @@ class TypeingGame:
         font = pygame.font.SysFont("hg正楷書体pro", 50)
         ans_text = font.render(answer, True, (255, 255, 255))
         screen.blit(ans_text, (w/2-100 + len(answer) * 1/8, h/2-140))
+        
     
     def input_word(self, event:pygame.event):
         if event.type == KEYDOWN:          
             push_key = pygame.key.name(event.key)
             print(push_key)
+            return push_key
 
 
 
@@ -114,6 +119,7 @@ def main():
             '筆箱':'fudebako'            
     }
     typeGame = TypeingGame(dic)
+    
     #Example
     while battle_mode:#main window loop
         pygame.draw.rect(screen, (50, 100, 50), pygame.Rect(100, 20, width-200, height-300), 1)

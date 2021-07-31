@@ -136,7 +136,7 @@ def main():
             '冒険':'bouken',
             'イス':"isu",
             '消しゴム':"kesigomu",
-            '焼肉':"yainiku",
+            '焼肉':"yakiniku",
             '鏡':"kagami",
             'お金':"okane",
             'ネクタイ':"nekutai",

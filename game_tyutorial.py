@@ -11,9 +11,8 @@ GS = 32
 DOWN, LEFT, RIGHT, UP = 0,1,2,3
 
 
-def load_image(filename, colorkey=None):
+def load_image(filename):
     image = pygame.image.load(filename)
-    image = image.convert_alpha()
     return image #return pygame imgae object
 
 def split_image(image):
@@ -23,9 +22,9 @@ def split_image(image):
         for j in range(0, 128, GS):
             surface = pygame.Surface((GS, GS))
             surface.blit(image, (0, 0), (j, i, GS, GS))
-            surface.convert_alpha()
+            surface.convert()
             imageList.append(surface)
-            print(imageList)
+            #print(imageList)
     return imageList
 class Player:
     animcycle = 24  # アニメーション速度
@@ -82,7 +81,9 @@ def main():
     screen = pygame.display.get_surface()
     pygame.display.set_caption("マス打")
     # 必要なオブジェクト（部品）
-    play = True
+    main_flg = True
+    move_play = True
+    type_play = False
     #player オブジェクト(仮)
     player_imgs = split_image(load_image('images/Characters/hero/pipo-charachip027c.png'))
     direction = DOWN
@@ -99,47 +100,47 @@ def main():
     text_render = font.render("", True, (255, 255, 255))
     msg_box_point = (50, 400, 700, 150)
     msg_box = pygame.Rect(msg_box_point[0], msg_box_point[1], msg_box_point[2], msg_box_point[3])
-    
-    while play:
-        clock.tick(60)
-        frame += 1
-        player_img = player_imgs[int(direction*4 + frame/animcycle%3)]
-        map.draw_map(screen)
-        screen.blit(player_img, (player_x*GS, player_y*GS))
-        pygame.draw.rect(screen, (255, 255, 255), msg_box, 6)  # 縁
-        pygame.draw.rect(screen, (0, 0, 0), msg_box)  # メッセージボックス
-        screen.blit(text_render, (70, 410))  # メッセージの表示
-       
-        pygame.display.update()
+    while main_flg:
+        while move_play:
+            clock.tick(60)
+            frame += 1
+            player_img = player_imgs[int(direction*4 + frame/animcycle%3)]
+            map.draw_map(screen)
+            screen.blit(player_img, (player_x*GS, player_y*GS))
+            pygame.draw.rect(screen, (255, 255, 255), msg_box, 6)  # 縁
+            pygame.draw.rect(screen, (0, 0, 0), msg_box)  # メッセージボックス
+            screen.blit(text_render, (70, 410))  # メッセージの表示
         
-        #pygame.time.wait(100)
-        #pygame.time.wait(80)
-        text_render = font.render(start_text[0:int(frame/10)], True, (255, 255, 255))
-        
-        for event in pygame.event.get():
-            if event.type == QUIT:          # 閉じるボタンが押されたとき
-                pygame.quit()
-                sys.exit()
-            if event.type == KEYDOWN:       # キーを押したとき
-                if event.key == K_ESCAPE:   # Escキーが押されたとき
+            pygame.display.update()
+            
+            #pygame.time.wait(100)
+            #pygame.time.wait(80)
+            text_render = font.render(start_text[0:int(frame/10)], True, (255, 255, 255))
+            
+            for event in pygame.event.get():
+                if event.type == QUIT:          # 閉じるボタンが押されたとき
                     pygame.quit()
                     sys.exit()
-                if event.key == K_DOWN:
-                    direction = DOWN
-                #if is_movable(x, y+1):
-                    player_y += 1
-                if event.key == K_LEFT:
-                    direction = LEFT
-            #if is_movable(x-1, y):
-                    player_x -= 1
-                if event.key == K_RIGHT:
-                    direction = RIGHT
-            #if is_movable(x+1, y):
-                    player_x += 1
-                if event.key == K_UP:
-                    direction = UP
-            #if is_movable(x, y-1):
-                    player_y -= 1            
+                if event.type == KEYDOWN:       # キーを押したとき
+                    if event.key == K_ESCAPE:   # Escキーが押されたとき
+                        pygame.quit()
+                        sys.exit()
+                    if event.key == K_DOWN:
+                        direction = DOWN
+                    #if is_movable(x, y+1):
+                        player_y += 1
+                    if event.key == K_LEFT:
+                        direction = LEFT
+                #if is_movable(x-1, y):
+                        player_x -= 1
+                    if event.key == K_RIGHT:
+                        direction = RIGHT
+                #if is_movable(x+1, y):
+                        player_x += 1
+                    if event.key == K_UP:
+                        direction = UP
+                #if is_movable(x, y-1):
+                        player_y -= 1            
 
 if __name__ == "__main__":
     main()

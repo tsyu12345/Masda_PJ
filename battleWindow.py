@@ -61,11 +61,13 @@ class TypeingGame:
         font.set_bold(True)
         question = self.return_question(index)
         q_text = font.render(question, True, (255, 255, 255))
-        screen.blit(q_text, (w/2-100, h/2 - 250))
+        q_text_rect = q_text.get_rect(center=(w/2, h/2 - 190))
+        screen.blit(q_text, q_text_rect)
         answer = self.return_ans(index)
         font = pygame.font.SysFont("hg正楷書体pro", 50)
         ans_text = font.render(answer, True, (255, 255, 255))
-        screen.blit(ans_text, (w/2-100 + len(answer) * 1/8, h/2-140))
+        ans_text_rect = ans_text.get_rect(center=(w/2 , h/2-120))
+        screen.blit(ans_text, ans_text_rect)
         
     
     def input_word(self, event:pygame.event):
@@ -81,7 +83,7 @@ class TypeingGame:
 
 
 
-
+#Example
 def main():
     #init pygame window
     pygame.init()
@@ -126,7 +128,7 @@ def main():
         monster.display(screen)
         aitem_btn.display(screen)
         status_bar.display(screen)
-        typeGame.display(screen, 4)
+        typeGame.display(screen, 5)
         pygame.display.update()
 
         # イベント処理

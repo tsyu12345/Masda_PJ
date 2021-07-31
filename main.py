@@ -1,9 +1,10 @@
+"""dependency library import"""
 import pygame
 from pygame.locals import *
 #from playsound import playsound
 import threading as th 
 import sys
-import csv
+#import csv
 
 """import game module"""
 from LoadMap import Map
@@ -12,7 +13,7 @@ from LoadMap import Map
 import tutorial
 import game_tyutorial
 
-"""here"""
+
 
 class TitleText:
     def __init__(self, text, col_tuple):

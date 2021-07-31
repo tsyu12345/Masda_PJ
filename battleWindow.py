@@ -4,6 +4,7 @@ from pygame.locals import *
 import sys
 from Button import Button
 from LocalFunc import *
+import threading as th
 
 class Monster:
     def __init__(self, img_path:str, position:tuple, HP:int, level:int):
@@ -39,7 +40,8 @@ class TypeingGame:
     def __init__(self, question_dic:dict):
         self.q_dic = question_dic
         self.inputKey_list = []
-    
+        self.index = 0
+        self.end_flg = False
     def return_question(self, index):
         q:list = list(self.q_dic.keys())
         return q[index]
@@ -54,28 +56,56 @@ class TypeingGame:
         else:
             return False
 
-    def display(self, screen, index):
+    def display(self, screen):
         w, h = screen.get_size()
         pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(150, 50, 500, 200), 4)
         font = pygame.font.SysFont("hg正楷書体pro", 100)
         font.set_bold(True)
-        question = self.return_question(index)
+        question = self.return_question(self.index)
         q_text = font.render(question, True, (255, 255, 255))
         q_text_rect = q_text.get_rect(center=(w/2, h/2 - 190))
         screen.blit(q_text, q_text_rect)
-        answer = self.return_ans(index)
+        answer = self.return_ans(self.index)
         font = pygame.font.SysFont("hg正楷書体pro", 50)
         ans_text = font.render(answer, True, (255, 255, 255))
         ans_text_rect = ans_text.get_rect(center=(w/2 , h/2-120))
         screen.blit(ans_text, ans_text_rect)
-        
-    
+        for event in pygame.event.get():
+            self.__exit(event)
+
+            if len(self.inputKey_list) == len(answer):
+                self.index += 1
+                self.inputKey_list = []
+
+                if self.index+1 == len(self.q_dic):
+                    self.end_flg = True
+
+            else:
+                pass
+            input = self.input_word(event)
+            #print(len(self.inputKey_list))
+            judge = self.judge(input, answer[len(self.inputKey_list)])
+            if judge == True:
+                print("judge : " + input)
+                self.inputKey_list.append(input)
+            
+
+
+    def __exit(self, event):
+        # 終了用のイベント処理
+        if event.type == QUIT:          # 閉じるボタンが押されたとき
+            pygame.quit()
+            sys.exit()
+        if event.type == KEYDOWN:       # キーを押したとき   
+            if event.key == K_ESCAPE:   # Escキーが押されたとき
+                pygame.quit()
+                sys.exit()
+
     def input_word(self, event:pygame.event):
         if event.type == KEYDOWN:          
             push_key = pygame.key.name(event.key)
             print(push_key)
             return push_key
-
 
 
 
@@ -102,7 +132,7 @@ def main():
     aitem_btn = Button("アイテム", (255, 255, 255), (0, 0, 0), (width / 4, height-100, 100, 30))
     status_bar = DisplayParameter(10, 10)
     dic = {
-            'RPG':"RPG",
+            'RPG':"rpg",
             '冒険':'bouken',
             'イス':"isu",
             '消しゴム':"kesigomu",
@@ -121,20 +151,21 @@ def main():
             '筆箱':'fudebako'            
     }
     typeGame = TypeingGame(dic)
-    
     #Example
     while battle_mode:#main window loop
+        pygame.draw.rect(screen, (0, 0, 0), Rect(0, 0, width, height))
         pygame.draw.rect(screen, (50, 100, 50), pygame.Rect(100, 20, width-200, height-300), 1)
         monster.display(screen)
         aitem_btn.display(screen)
         status_bar.display(screen)
-        typeGame.display(screen, 5)
+        #th1 = th.Thread(target=typeGame.display, args=(screen, 5))
+        #th1.start()
+        typeGame.display(screen)
         pygame.display.update()
 
         # イベント処理
         for event in pygame.event.get():
             # 終了用のイベント処理
-            typeGame.input_word(event)
             if event.type == QUIT:          # 閉じるボタンが押されたとき
                 pygame.quit()
                 sys.exit()

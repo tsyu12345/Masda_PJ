@@ -6,6 +6,7 @@ import sys
 import csv
 import os
 from LoadMap import Map
+from MsgBox import MsgBox
 
 GS = 32
 DOWN, LEFT, RIGHT, UP = 0,1,2,3
@@ -87,7 +88,7 @@ def main():
     #player オブジェクト(仮)
     player_imgs = split_image(load_image('images/Characters/hero/pipo-charachip027c.png'))
     direction = DOWN
-    player_x, player_y = 1,1
+    player_x, player_y = 200/GS,150/GS #初期位置
     animcycle = 24
     frame = 0
     clock = pygame.time.Clock()
@@ -96,10 +97,30 @@ def main():
     map = Map('Map_data/tyutorial_test.tmx')
     
     #メッセージボックス
-    start_text = "→、←、↑、↓で動くぞ！！"
-    text_render = font.render("", True, (255, 255, 255))
+    text_list = [
+        "ほっほっほ。ワシは仏じゃ。",
+        "ここではこのゲームの操作方法について説明するぞ。",
+        "",#1
+        "え？画面にキャラクターがいないって？",
+        "",
+        "",#2
+        "決して、説明用のキャラを用意するのが面倒だったとか",
+        "締め切りまでに間に合わなかったとか、",
+        "そーゆーのではないから！！",#3
+        "おほん。",
+        "では、気を取り直して、まずキャラ操作の説明じゃ。",
+        "",#4
+        "基本操作は簡単。",
+        "キーボードの➞キーで動かすことができるぞ。",
+        "",#5
+        "すこし歩きまわってみるがよい。",
+        "",
+        "",#6
+    ]
+
+    #text_render = font.render("", True, (255, 255, 255))
     msg_box_point = (50, 400, 700, 150)
-    msg_box = pygame.Rect(msg_box_point[0], msg_box_point[1], msg_box_point[2], msg_box_point[3])
+    msg_box = MsgBox(text_list)
     while main_flg:
         while move_play:
             clock.tick(60)
@@ -107,17 +128,17 @@ def main():
             player_img = player_imgs[int(direction*4 + frame/animcycle%3)]
             map.draw_map(screen)
             screen.blit(player_img, (player_x*GS, player_y*GS))
-            pygame.draw.rect(screen, (255, 255, 255), msg_box, 6)  # 縁
-            pygame.draw.rect(screen, (0, 0, 0), msg_box)  # メッセージボックス
-            screen.blit(text_render, (70, 410))  # メッセージの表示
-        
+            msg_box.display(screen, msg_box_point)
             pygame.display.update()
-            
             #pygame.time.wait(100)
             #pygame.time.wait(80)
-            text_render = font.render(start_text[0:int(frame/10)], True, (255, 255, 255))
+            #text_render = font.render(text_list[0:int(frame/10)], True, (255, 255, 255))
             
             for event in pygame.event.get():
+                msg_box.text_update(event)
+                if msg_box.end_flg == True:
+                    pygame.quit()
+                    sys.exit()
                 if event.type == QUIT:          # 閉じるボタンが押されたとき
                     pygame.quit()
                     sys.exit()

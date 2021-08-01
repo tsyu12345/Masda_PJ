@@ -15,9 +15,11 @@ class MsgBox():
         self.posy = 410
         self.end_flg = False
         self.label:list = []
+        self.frame = 0
     
     def display(self, screen:pygame.Surface, point:tuple):
         #print(self.msg_index)
+        self.frame += 1
         msg_box = pygame.Rect(point[0], point[1], point[2], point[3])
         pygame.draw.rect(screen, (255, 255, 255), msg_box, 6)  # 縁
         pygame.draw.rect(screen, (0, 0, 0), msg_box)  # メッセージボックス
@@ -28,12 +30,15 @@ class MsgBox():
         screen.blit(self.label[1], (self.posx,self.posy+40))
         screen.blit(self.label[2], (self.posx,self.posy+80))
         pygame.display.update()
+        #text_render = self.font.render(self.msg_list[0:int(self.frame/10)], True, (255, 255, 255))
     
     def text_update(self, event:pygame.event):
+        """call in main loop of pygame.event.get()"""
         if event.type == KEYDOWN:
             if event.key == K_RETURN:
                 try: 
-                    self.msg_index += 3           
+                    self.msg_index += 3 
+                    self.frame = 0          
                     self.label[0] = self.font.render(
                         self.msg_list[self.msg_index], True, (255, 255, 255))
                     self.label[1] = self.font.render(

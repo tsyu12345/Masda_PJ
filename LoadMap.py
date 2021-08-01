@@ -33,3 +33,18 @@ class Map: #Tiledからの読み込みと描画担当
         if self.map[y][x] == 1:  # 水は移動できない
             return False
         return True
+
+class ActionMap():
+    def __init__(self, map:Map, screen:pygame.Surface):
+        self.map = map
+        self.screen = screen
+    
+    def calc_offset(self, playerX, playerY):
+        w, h = self.screen.get_size()
+        offsetX = playerX - w/2
+        offsetY = playerY - h/2
+        return offsetX, offsetY
+
+   
+
+        

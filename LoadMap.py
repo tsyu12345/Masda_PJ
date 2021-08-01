@@ -10,19 +10,38 @@ def load_image(filename, colorkey=None):
     return image
     
 class Map: #Tiledからの読み込みと描画担当
-
-    row = 800 #map row
-    col = 640 #map column
+    GS = 16
+    row = 50 #map row
+    col = 40 #map column
 
     def __init__(self, data_path):
         self.gameMap = pytmx.load_pygame(data_path)
+        #self.surface = pygame.Surface()
+        self.tile_list = [] 
 
-    def draw_map(self, screen):
+    def draw_map(self, screen:pygame.Surface, offsetX, offsetY):
+        # マップの描画範囲を計算し描画
+        width, height = screen.get_size()
+        startx = offsetX / self.GS
+        endx = startx + width/self.GS + 1
+        starty = offsetY / self.GS
+        endy = starty + height/self.GS + 1
+        self.tile_list = []
+        #self.tile_gid = []
         for layer in self.gameMap.visible_layers:
+            #print(layer)
             for x, y, gid, in layer:
+                #print(x)
                 tile = self.gameMap.get_tile_image_by_gid(gid)
+                #print(tile)
                 if(tile != None):
+                    self.tile_list.append(tile)
+                    #self.tile_gid.append(gid)
+                    #print(self.gameMap.tilewidth)
+                    #screen.blit(tile, (x * self.gameMap.tilewidth-offsetX, y * self.gameMap.tileheight-offsetY))
                     screen.blit(tile, (x * self.gameMap.tilewidth, y * self.gameMap.tileheight))
+       
+        
     
     def is_movable(self, x, y): #マップの移動可否判定:現在調整中。。。
         """(x,y)は移動可能か？"""
@@ -34,17 +53,5 @@ class Map: #Tiledからの読み込みと描画担当
             return False
         return True
 
-class ActionMap():
-    def __init__(self, map:Map, screen:pygame.Surface):
-        self.map = map
-        self.screen = screen
-    
-    def calc_offset(self, playerX, playerY):
-        w, h = self.screen.get_size()
-        offsetX = playerX - w/2
-        offsetY = playerY - h/2
-        return offsetX, offsetY
-
-   
 
         

@@ -7,7 +7,7 @@ class MsgBox():
     def __init__(self, msg_list:list):
         self.msg_list = msg_list
         self.text_index = 0
-        self.font = pygame.font.Font('font_data/misaki_gothic_2nd.ttf', 25)
+        self.font = pygame.font.Font('font_data/PixelMplus-20130602/PixelMplus12-Regular.ttf', 26)
         self.font.set_bold(True)
         self.text_render = self.font.render("", True, (255, 255, 255))
         self.msg_index = 0

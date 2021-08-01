@@ -5,28 +5,15 @@ from pytmx.util_pygame import load_pygame
 import sys
 import csv
 import os
-from LoadMap import Map
+from LoadMap import *
+from LocalFunc import *
 from MsgBox import MsgBox
 
-GS = 32
+GS = 16
 DOWN, LEFT, RIGHT, UP = 0,1,2,3
 
 
-def load_image(filename):
-    image = pygame.image.load(filename)
-    return image #return pygame imgae object
 
-def split_image(image):
-    """分割したイメージを格納したリストを返す"""
-    imageList = []
-    for i in range(0, 128, GS):
-        for j in range(0, 128, GS):
-            surface = pygame.Surface((GS, GS))
-            surface.blit(image, (0, 0), (j, i, GS, GS))
-            surface.convert()
-            imageList.append(surface)
-            #print(imageList)
-    return imageList
 class Player:
     animcycle = 24  # アニメーション速度
     frame = 0
@@ -74,7 +61,7 @@ class Player:
 
 def main():
     pygame.init()
-    font = pygame.font.Font('font_data/misaki_gothic_2nd.ttf', 25)
+    font = pygame.font.Font('font_data/PixelMplus-20130602/PixelMplus12-Regular.ttf', 25)
     font.set_bold(True)
     width = 800  # screeen
     height = 640
@@ -86,7 +73,7 @@ def main():
     move_play = True
     type_play = False
     #player オブジェクト(仮)
-    player_imgs = split_image(load_image('images/Characters/hero/pipo-charachip027c.png'))
+    player_imgs = split_image_load(load_image('images/Characters/hero/N9FYjgyQEjELew61627826982.png'))
     direction = DOWN
     player_x, player_y = 200/GS,150/GS #初期位置
     animcycle = 24
@@ -95,15 +82,16 @@ def main():
     
     #マップオブジェクト
     map = Map('Map_data/tyutorial_test.tmx')
+    #disp_map = ActionMap(map, screen)
     
     #メッセージボックス
     text_list = [
-        "ほっほっほ。ワシは仏じゃ。",
+        "ほっほっほ。ワシは天におる仏じゃ。",
         "ここではこのゲームの操作方法について説明するぞ。",
         "",#1
-        "え？画面にキャラクターがいないって？",
-        "",
-        "",#2
+        "え？RPGによくいる",
+        "説明してくれるおじさんの",
+        "キャラクターがいないって？",#2
         "決して、説明用のキャラを用意するのが面倒だったとか",
         "締め切りまでに間に合わなかったとか、",
         "そーゆーのではないから！！",#3
@@ -111,7 +99,7 @@ def main():
         "では、気を取り直して、まずキャラ操作の説明じゃ。",
         "",#4
         "基本操作は簡単。",
-        "キーボードの➞キーで動かすことができるぞ。",
+        "キーボードの→キーで動かすことができるぞ。",
         "",#5
         "すこし歩きまわってみるがよい。",
         "",
@@ -124,10 +112,14 @@ def main():
     while main_flg:
         while move_play:
             clock.tick(60)
+            offsetX, offsetY = calc_offset(screen, player_x*GS, player_y*GS)
             frame += 1
             player_img = player_imgs[int(direction*4 + frame/animcycle%3)]
-            map.draw_map(screen)
+            map.draw_map(screen, offsetX, offsetY)
+            #disp_map.draw(screen,player_x*GS, player_y*GS)
+            #screen.blit(player_img, (player_x*GS-offsetX, player_y*GS-offsetY))
             screen.blit(player_img, (player_x*GS, player_y*GS))
+            #print(player_x*GS, player_y*GS)
             msg_box.display(screen, msg_box_point)
             pygame.display.update()
             #pygame.time.wait(100)

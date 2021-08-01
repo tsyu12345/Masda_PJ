@@ -10,7 +10,7 @@ def main():
     # pygame window initialization
     pygame.init()
     font = pygame.font.Font(
-        'font_data/misaki_gothic_2nd.ttf', 26)
+        'font_data/PixelMplus-20130602/PixelMplus12-Regular.ttf', 26)
     font.set_bold(True)
     width = 800  # screeen
     height = 640
@@ -29,6 +29,7 @@ def main():
     sub_msg_box = pygame.Rect(
         sub_msg_box_point[0], sub_msg_box_point[1], sub_msg_box_point[2], sub_msg_box_point[3])
     sub_msg = "え？　もう一度聞きます。_"
+    sub_msg2 = "続けるにはEnterキーを押してください。"
     sub_render = font.render("", True, (255, 255, 255))
     counter = 0
     bd_t_cnt = 0
@@ -107,6 +108,7 @@ def main():
                         sys.exit()
 
         bd_t_cnt = 0
+        sub_msg_flg = False
         if bad_cnt == 1:
             sub_msg = "いや、なんでよ。マジでもう一回聞くよ？＿"
         if bad_cnt == 2:
@@ -116,13 +118,18 @@ def main():
             pygame.draw.rect(screen, (0, 0, 0), sub_msg_box)
             screen.blit(
                 sub_render, (sub_msg_box_point[0] + 50, sub_msg_box_point[1] + 15))
+            if sub_msg_flg:
+                screen.blit(sub_render2, (sub_msg_box_point[0] + 50, sub_msg_box_point[1] + 50))
             pygame.display.update()
 
             pygame.time.wait(100)
             bd_t_cnt += 1
             sub_render = font.render(
                 sub_msg[0:bd_t_cnt], True, (255, 255, 255))
-
+            if bd_t_cnt > len(sub_msg):
+                sub_msg_flg = True
+                sub_render2 = font.render(sub_msg2, True, (255, 255, 255))
+            
             for event in pygame.event.get():
                 # 終了用のイベント処理
                 if event.type == QUIT:          # 閉じるボタンが押されたとき

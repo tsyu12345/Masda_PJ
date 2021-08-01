@@ -10,7 +10,7 @@ def main():
     # pygame window initialization
     pygame.init()
     font = pygame.font.Font(
-        'font_data/PixelMplus-20130602/PixelMplus10-Regular.ttf', 26)
+        'font_data/misaki_gothic_2nd.ttf', 26)
     font.set_bold(True)
     width = 800  # screeen
     height = 640

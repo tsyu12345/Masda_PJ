@@ -36,12 +36,37 @@ class DisplayParameter:
         pygame.draw.rect(screen, (5, 150, 5), rect)
         screen.blit(self.lv_text, (200, height-250))
 
+class CountDown():
+    def __init__(self, end_seconds):
+        self.start = pygame.get_ticks()
+        self.end_seconds = end_seconds
+        self.font = pygame.font.Font('font_data/misaki_gothic_2nd.ttf', 20)
+    
+    def end_judge(self):
+        """use in main loop.経過時間になったらtrueを返す。他はfalse."""
+        seconds = (pygame.get_ticks() - self.start)/1000
+        if seconds < self.end_seconds:
+            return False
+        else:
+            return True
+    
+    def display(self, screen):
+        width, height = screen.get_size()
+        self.text = self.font.render("残り時間", True, (255, 255, 255))
+        screen.blit(self.text, (100, height/2))
+        rect = pygame.Rect(150, height/2, 100, 20)
+        pygame.draw.rect(screen, (255, 50, 50), rect)
+
 class TypeingGame:
-    def __init__(self, question_dic:dict):
+    def __init__(self, question_dic:dict, end_seconds:int):
         self.q_dic = question_dic
         self.inputKey_list = []
         self.index = 0
         self.end_flg = False
+        self.strat_time = pygame.time.get_ticks()
+        self.end_seconds = end_seconds
+
+    
     def return_question(self, index):
         q:list = list(self.q_dic.keys())
         return q[index]
@@ -70,9 +95,16 @@ class TypeingGame:
         ans_text = font.render(answer, True, (255, 255, 255))
         ans_text_rect = ans_text.get_rect(center=(w/2 , h/2-120))
         screen.blit(ans_text, ans_text_rect)
+        seconds = (pygame.time.get_ticks()-self.strat_time) / 1000
+        print(str(seconds) + ".sec")
         for event in pygame.event.get():
             self.__exit(event)
-
+            """
+            if seconds > self.end_seconds:
+                self.index += 1
+                self.inputKey_list = []
+                self.strat_time = pygame.time.get_ticks()
+            """
             if len(self.inputKey_list) == len(answer):
                 self.index += 1
                 self.inputKey_list = []
@@ -150,7 +182,7 @@ def main():
             '帽子':"boushi",
             '筆箱':'fudebako'            
     }
-    typeGame = TypeingGame(dic)
+    typeGame = TypeingGame(dic, 10)
     #Example
     while battle_mode:#main window loop
         pygame.draw.rect(screen, (0, 0, 0), Rect(0, 0, width, height))

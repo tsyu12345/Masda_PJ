@@ -44,7 +44,7 @@ def split_load_img(path, x, y, width, height):
 
 def main():
     pygame.init()
-    font = pygame.font.Font('font_data/PixelMplus-20130602/PixelMplus12-Regular.ttf', 20)
+    font = pygame.font.Font('font_data/misaki_gothic_2nd.ttf', 20)
     font.set_bold(True)
     width = 800 #screeen
     height = 640
@@ -62,7 +62,7 @@ def main():
     e_text = font.render("おわる", True, (255, 255, 255))
     start = button.btn_init(s_btn_point)
     end = button.btn_init(e_btn_point)
-    auth_font = pygame.font.Font('font_data/PixelMplus-20130602/PixelMplus12-Regular.ttf', 20)
+    auth_font = pygame.font.SysFont("hg正楷書体pro", 20)
     auth_caption = pygame.Rect(0, 600, width, height-600)
     caption = auth_font.render("Copyright 2021-06-23 チームたんじろう all rights reserved", True, (0,0,0))
     """

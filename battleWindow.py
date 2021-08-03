@@ -22,7 +22,7 @@ class DisplayParameter:
         self.HP = HP
         self.level = Level
         self.text_col:tuple = (255, 255, 255)
-        font = pygame.font.Font('font_data/misaki_gothic_2nd.ttf', 20)
+        font = pygame.font.Font('font_data/PixelMplus-20130602/PixelMplus12-Regular.ttf', 20)
         font.set_bold(True)
         col1 = "HP："
         col2 = "LV："
@@ -38,24 +38,28 @@ class DisplayParameter:
 
 class CountDown():
     def __init__(self, end_seconds):
-        self.start = pygame.get_ticks()
+        self.start = pygame.time.get_ticks()
         self.end_seconds = end_seconds
-        self.font = pygame.font.Font('font_data/misaki_gothic_2nd.ttf', 20)
+        self.now_seconds = 0
+        self.font = pygame.font.Font('font_data/PixelMplus-20130602/PixelMplus12-Regular.ttf', 20)
     
-    def end_judge(self):
+    def count_down(self):
         """use in main loop.経過時間になったらtrueを返す。他はfalse."""
-        seconds = (pygame.get_ticks() - self.start)/1000
-        if seconds < self.end_seconds:
+        self.now_seconds = (pygame.time.get_ticks() - self.start)/1000
+        if self.now_seconds < self.end_seconds:
             return False
         else:
             return True
     
     def display(self, screen):
+        """Display time parameter"""
         width, height = screen.get_size()
-        self.text = self.font.render("残り時間", True, (255, 255, 255))
-        screen.blit(self.text, (100, height/2))
-        rect = pygame.Rect(150, height/2, 100, 20)
-        pygame.draw.rect(screen, (255, 50, 50), rect)
+        rest_time = self.end_seconds - self.now_seconds
+        self.text = self.font.render("残り時間:" + str(int(rest_time)), True, (255, 255, 255))    
+        screen.blit(self.text, (100, height/2 + 120))
+        """draw time bar""" 
+        pygame.draw.rect(screen, (255, 255, 255), Rect(250, height/2 + 120, 500, 20), 2)  # 縁
+        pygame.draw.rect(screen, (255, 50, 50), Rect(252, height/2 + 122, rest_time*50, 17))
 
 class TypeingGame:
     def __init__(self, question_dic:dict, end_seconds:int):
@@ -63,10 +67,8 @@ class TypeingGame:
         self.inputKey_list = []
         self.index = 0
         self.end_flg = False
-        self.strat_time = pygame.time.get_ticks()
-        self.end_seconds = end_seconds
+        self.count_down = CountDown(end_seconds)
 
-    
     def return_question(self, index):
         q:list = list(self.q_dic.keys())
         return q[index]
@@ -81,7 +83,8 @@ class TypeingGame:
         else:
             return False
 
-    def display(self, screen):
+    def display(self, screen:pygame.Surface):
+        self.count_down.display(screen)
         w, h = screen.get_size()
         pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(150, 50, 500, 200), 4)
         font = pygame.font.SysFont("hg正楷書体pro", 100)
@@ -95,31 +98,28 @@ class TypeingGame:
         ans_text = font.render(answer, True, (255, 255, 255))
         ans_text_rect = ans_text.get_rect(center=(w/2 , h/2-120))
         screen.blit(ans_text, ans_text_rect)
-        seconds = (pygame.time.get_ticks()-self.strat_time) / 1000
-        print(str(seconds) + ".sec")
-        for event in pygame.event.get():
-            self.__exit(event)
-            """
-            if seconds > self.end_seconds:
-                self.index += 1
-                self.inputKey_list = []
-                self.strat_time = pygame.time.get_ticks()
-            """
-            if len(self.inputKey_list) == len(answer):
-                self.index += 1
-                self.inputKey_list = []
 
-                if self.index+1 == len(self.q_dic):
-                    self.end_flg = True
+        if self.index+1 == len(self.q_dic):#Judge End
+            self.end_flg = True
+        else:
+            for event in pygame.event.get():
+                self.__exit(event)
+                if self.count_down.count_down() == False:
+                    if len(self.inputKey_list) == len(answer):
+                        self.index += 1
+                        self.inputKey_list = []
+                    else:
+                        input = self.input_word(event)
+                        #print(len(self.inputKey_list))
+                        judge = self.judge(input, answer[len(self.inputKey_list)])
+                        if judge == True:
+                            print("judge : " + input)
+                            self.inputKey_list.append(input)
+                else: #when time out
+                    self.index += 1
+                    self.inputKey_list = []
+                    self.count_down.start = pygame.time.get_ticks()
 
-            else:
-                pass
-            input = self.input_word(event)
-            #print(len(self.inputKey_list))
-            judge = self.judge(input, answer[len(self.inputKey_list)])
-            if judge == True:
-                print("judge : " + input)
-                self.inputKey_list.append(input)
             
 
 

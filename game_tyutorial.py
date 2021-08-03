@@ -7,6 +7,7 @@ import csv
 import os
 from LoadMap import Map
 from MsgBox import MsgBox
+from battleWindow import *
 
 GS = 32
 DOWN, LEFT, RIGHT, UP = 0,1,2,3
@@ -117,11 +118,19 @@ def main():
         "",
         "",#6
     ]
-
+    dic = {
+            'RPG':"rpg",
+            '冒険':'bouken',
+            'イス':"isu",
+        }
     #text_render = font.render("", True, (255, 255, 255))
     msg_box_point = (50, 400, 700, 150)
     msg_box = MsgBox(text_list)
     while main_flg:
+
+        while type_play:
+            #Typing tyutorial
+
         while move_play:
             clock.tick(60)
             frame += 1

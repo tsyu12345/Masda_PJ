@@ -1,7 +1,7 @@
 """dependency library import"""
 import pygame
 from pygame.locals import *
-#from playsound import playsound
+from playsound import playsound
 import threading as th 
 import sys
 #import csv
@@ -44,7 +44,7 @@ def split_load_img(path, x, y, width, height):
 
 def main():
     pygame.init()
-    font = pygame.font.Font('font_data/misaki_gothic_2nd.ttf', 20)
+    font = pygame.font.Font('font_data\PixelMplus-20130602\PixelMplus12-Regular.ttf', 20)
     font.set_bold(True)
     width = 800 #screeen
     height = 640
@@ -70,12 +70,13 @@ def main():
     pygame.mixer.music.load('sounds/OpeningThema/魔王魂  8bit25.ogg') #BGM
     pygame.mixer.music.play(-1)
     """
-    #th1 = th.Thread(target=playsound, args=(['sounds/OpeningThema/8bit03.mp3']), daemon=True)
-    #th1.start()
+    #OP_BGM = th.Thread(target=playsound, args=('sounds/OpeningThema/opening-act.mp3'), daemon=True)
+    #click1_se = th.Thread(target=playsound, args=('sounds/clickSound/systen41.mp3'), daemon=True)
     #タイトルウィンドウ表示
     title_page = True
     corse_select = False
     top_page = True
+    #OP_BGM.start()
     while top_page:#全体のループ
 
         while title_page:
@@ -106,7 +107,7 @@ def main():
                     if start.collidepoint(event.pos):
                         #ここにその後の処理を追加
                         print("start button pressed!!")
-                        
+                        #click1_se.start()
                         corse_select = True
                         title_page = False
         
@@ -171,7 +172,10 @@ def main():
                         print("チュートリアル button pressed!!")
                         tutorial.main()
                         pygame.init()
-                        game_tyutorial.main()                         
+                        game_tyutorial.main()
+                        print("END")
+                        pygame.init()
+
                     if c2_btn.collidepoint(event.pos):
                         #ここにその後の処理を追加
                         print("初級コース button pressed!!")

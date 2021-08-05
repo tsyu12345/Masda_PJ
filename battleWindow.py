@@ -51,6 +51,9 @@ class CountDown():
         self.font = pygame.font.Font(
             'font_data/PixelMplus-20130602/PixelMplus12-Regular.ttf', 20)
 
+    def start_cnt(self):
+        self.start = pygame.time.get_ticks()
+
     def display(self, screen):
         """Display time parameter"""
         #print("in bar")
@@ -130,19 +133,13 @@ class TypeingGame:
         screen.blit(q_text, q_text_rect)
         #self.answer = self.return_ans(self.index)
         font = pygame.font.SysFont("hg正楷書体pro", 50)
-        base_text = font.render(self.answer, True, (255, 255, 255))
-        base_text_rect = base_text.get_rect(center=(w/2 , h/2-120))
-        screen.blit(base_text, base_text_rect)
-        for i, inputed in enumerate(self.inputKey_list):
-            if inputed == self.answer[i]:
-                inputed_text = font.render(self.answer[i], True, (255,0, 0))
-                inputed_text_rect = inputed_text.get_rect(center=(w/2, h/2-120))
-                x = base_text_rect.left + inputed_text_rect.width
-                if i == 0:
-                    screen.blit(inputed_text, Rect(base_text_rect.left, base_text_rect.top, 50, base_text_rect.height))
-                else:
-                    screen.blit(inputed_text, Rect(x , base_text_rect.top, 50, base_text_rect.height))
-
+        ans_text = font.render(self.answer, True, (255, 255, 255))
+        ans_text_rect = ans_text.get_rect(center=(w/2 , h/2-120))
+        ansed_text = font.render(self.answer[0:len(self.inputKey_list)], True, (255, 5, 5))
+        #print(self.answer)
+        screen.blit(ans_text, ans_text_rect)
+        screen.blit(ansed_text, ans_text_rect)  
+        
         #pygame.display.update()
         if self.index+1 == len(self.q_dic):#Judge End
             self.end_flg = True
@@ -158,7 +155,7 @@ class TypeingGame:
 def main():
     # init pygame window
     pygame.init()
-    font = pygame.font.Font('font_data/misaki_gothic_2nd.ttf', 20)
+    font = pygame.font.Font('font_data\PixelMplus-20130602\PixelMplus12-Regular.ttf', 20)
     font.set_bold(True)
     width = 800 #screeen
     height = 640
@@ -176,21 +173,12 @@ def main():
             'RPG':"rpg",
             '冒険':'bouken',
             'イス':"isu",
-            '消しゴム':"kesigomu",
-            '焼肉':"yakiniku",
-            '鏡':"kagami",
-            'お金':"okane",
-            'ネクタイ':"nekutai",
-            '傘':"kasa",
-            'ゴミ':"gomi",
-            'マクラ':"makura",
-            '電気':"dennki",
-            'マウス':"mausu",
-            '教科書':"kyoukasyo",
-            'うちわ':"uchiwa",
-            '帽子':"boushi",
-            '筆箱':'fudebako'            
-    }
+
+        }
+        
+            
+                        
+    
     typeGame = TypeingGame(dic, 10)
     #input_key = ""
     # Example
@@ -204,8 +192,10 @@ def main():
         #print(input_key)
         typeGame.display(screen)
         typeGame.count_down.display(screen)
+        print(typeGame.index)
         pygame.display.update()
-        # イベント処理
+        
+        #イベント処理
         for event in pygame.event.get():
             # 終了用のイベント処理
             typeGame.input_word(event)

@@ -7,7 +7,7 @@ class MsgBox():
     def __init__(self, msg_list:list):
         self.msg_list = msg_list
         self.text_index = 0
-        self.font = pygame.font.Font('font_data/misaki_gothic_2nd.ttf', 25)
+        self.font = pygame.font.Font('font_data\PixelMplus-20130602\PixelMplus12-Regular.ttf', 25)
         self.font.set_bold(True)
         self.text_render = self.font.render("", True, (255, 255, 255))
         self.msg_index = 0
@@ -16,6 +16,9 @@ class MsgBox():
         self.end_flg = False
         self.label:list = []
         self.frame = 0
+        self.frame_reset = False
+        self.disped_list = [False, False, False]
+        self.disabled = False
     
     def display(self, screen:pygame.Surface, point:tuple):
         #print(self.msg_index)
@@ -23,13 +26,19 @@ class MsgBox():
         msg_box = pygame.Rect(point[0], point[1], point[2], point[3])
         pygame.draw.rect(screen, (255, 255, 255), msg_box, 6)  # 縁
         pygame.draw.rect(screen, (0, 0, 0), msg_box)  # メッセージボックス
-        self.label.append(self.font.render(self.msg_list[self.msg_index], True, (255, 255, 255)))
-        self.label.append(self.font.render(self.msg_list[self.msg_index+1], True, (255, 255, 255)))
-        self.label.append(self.font.render(self.msg_list[self.msg_index+2], True, (255, 255, 255)))
-        screen.blit(self.label[0], (self.posx, self.posy))
-        screen.blit(self.label[1], (self.posx,self.posy+40))
-        screen.blit(self.label[2], (self.posx,self.posy+80))
+        try:
+            self.label.append(self.font.render(self.msg_list[self.msg_index], True, (255, 255, 255)))
+            self.label.append(self.font.render(self.msg_list[self.msg_index+1], True, (255, 255, 255)))
+            self.label.append(self.font.render(self.msg_list[self.msg_index+2], True, (255, 255, 255)))
+            screen.blit(self.label[0], (self.posx, self.posy))
+            screen.blit(self.label[1], (self.posx,self.posy+40))
+            screen.blit(self.label[2], (self.posx,self.posy+80))
+        except IndexError:
+            self.end_flg = True
         pygame.display.update()
+        
+
+        
         #text_render = self.font.render(self.msg_list[0:int(self.frame/10)], True, (255, 255, 255))
     
     def text_update(self, event:pygame.event):
@@ -38,13 +47,14 @@ class MsgBox():
             if event.key == K_RETURN:
                 try: 
                     self.msg_index += 3 
-                    self.frame = 0          
+                    self.frame = 0       
                     self.label[0] = self.font.render(
                         self.msg_list[self.msg_index], True, (255, 255, 255))
                     self.label[1] = self.font.render(
                         self.msg_list[self.msg_index+1], True, (255, 255, 255))
                     self.label[2] = self.font.render(
                         self.msg_list[self.msg_index+2], True, (255, 255, 255))
+
                 except IndexError:
                     self.end_flg = True
                 

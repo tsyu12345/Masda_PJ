@@ -71,6 +71,7 @@ def main():
         msg_box.display(screen, msg_box_point)
         pygame.display.update()
         for event in pygame.event.get():
+            msg_box.text_update(event)
             exit_game(event)
     
     

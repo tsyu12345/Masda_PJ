@@ -1,17 +1,18 @@
 """dependency library import"""
 import pygame
 from pygame.locals import *
-from playsound import playsound
+#from playsound import playsound
 import threading as th 
 import sys
 #import csv
 
 """import game module"""
 from LoadMap import Map
-
+from LocalFunc import *
 """import game file"""
 import tutorial
 import game_tyutorial
+
 
 
 
@@ -28,20 +29,6 @@ class Button:
         button = pygame.Rect(point_tuple[0], point_tuple[1], point_tuple[2], point_tuple[3])
         return button 
 
-
-def load_img(path):
-    img = pygame.image.load(path)
-    img = img.convert()
-    return img
-
-def split_load_img(path, x, y, width, height):
-    surface = pygame.Surface((16 ,16))
-    surface.blit()
-    img = pygame.image.pygame.load(path)
-    img = img.convert()
-
-
-
 def main():
     pygame.init()
     font = pygame.font.Font('font_data\PixelMplus-20130602\PixelMplus12-Regular.ttf', 20)
@@ -52,7 +39,7 @@ def main():
     screen = pygame.display.get_surface()
     pygame.display.set_caption("マス打")
     #必要なオブジェクト（部品）をここへ
-    bg = load_img('images/top_page/おまけピクチャ/800×600/pipo-pic001.jpg')#背景画像
+    bg = load_image('images/top_page/おまけピクチャ/800×600/pipo-pic001.jpg')#背景画像
     bg_rect = bg.get_rect()
     title = TitleText("マス打", (0, 0, 0))
     button = Button()
@@ -65,13 +52,9 @@ def main():
     auth_font = pygame.font.SysFont("hg正楷書体pro", 20)
     auth_caption = pygame.Rect(0, 600, width, height-600)
     caption = auth_font.render("Copyright 2021-06-23 チームたんじろう all rights reserved", True, (0,0,0))
-    """
-    pygame.mixer.init()
-    pygame.mixer.music.load('sounds/OpeningThema/魔王魂  8bit25.ogg') #BGM
-    pygame.mixer.music.play(-1)
-    """
-    #OP_BGM = th.Thread(target=playsound, args=('sounds/OpeningThema/opening-act.mp3'), daemon=True)
-    #click1_se = th.Thread(target=playsound, args=('sounds/clickSound/systen41.mp3'), daemon=True)
+    #BGM
+    yes_se = pygame.mixer.Sound('sounds/clickSound/systen40.wav')
+    no_se = pygame.mixer.Sound('sounds/clickSound/systen41.wav')
     #タイトルウィンドウ表示
     title_page = True
     corse_select = False
@@ -106,12 +89,14 @@ def main():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if start.collidepoint(event.pos):
                         #ここにその後の処理を追加
+                        yes_se.play()
                         print("start button pressed!!")
                         #click1_se.start()
                         corse_select = True
                         title_page = False
         
                     elif end.collidepoint(event.pos):
+                        no_se.play()
                         print("end button presssed!!")
                         pygame.quit()
                         sys.exit()
@@ -169,6 +154,7 @@ def main():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if c1_btn.collidepoint(event.pos):
                         #ここにその後の処理を追加
+                        yes_se.play()
                         print("チュートリアル button pressed!!")
                         tutorial.main()
                         pygame.init()
@@ -178,17 +164,21 @@ def main():
 
                     if c2_btn.collidepoint(event.pos):
                         #ここにその後の処理を追加
+                        yes_se.play()
                         print("初級コース button pressed!!")
                         
                     if c3_btn.collidepoint(event.pos):
                         #ここにその後の処理を追加
+                        yes_se.play()
                         print("中級コース button pressed!!")
                         
                     if c4_btn.collidepoint(event.pos):
                         #ここにその後の処理を追加
+                        yes_se.play()
                         print("上級コース button pressed!!")
                         
                     if return_btn.collidepoint(event.pos):
+                        no_se.play()
                         title_page = True
                         corse_select = False
                         

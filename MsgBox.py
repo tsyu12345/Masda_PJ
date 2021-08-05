@@ -23,9 +23,9 @@ class MsgBox():
     def display(self, screen:pygame.Surface, point:tuple):
         #print(self.msg_index)
         self.frame += 1
-        msg_box = pygame.Rect(point[0], point[1], point[2], point[3])
-        pygame.draw.rect(screen, (255, 255, 255), msg_box, 6)  # 縁
-        pygame.draw.rect(screen, (0, 0, 0), msg_box)  # メッセージボックス
+        self.msg_box = pygame.Rect(point[0], point[1], point[2], point[3])
+        pygame.draw.rect(screen, (255, 255, 255), self.msg_box, 6)  # 縁
+        pygame.draw.rect(screen, (0, 0, 0), self.msg_box)  # メッセージボックス
         try:
             self.label.append(self.font.render(self.msg_list[self.msg_index], True, (255, 255, 255)))
             self.label.append(self.font.render(self.msg_list[self.msg_index+1], True, (255, 255, 255)))
@@ -36,9 +36,17 @@ class MsgBox():
         except IndexError:
             self.end_flg = True
         pygame.display.update()
-        
 
-        
+    """   
+    def name_tag(self, screen:pygame.Surface,name:str):
+        tag_rect_point = pygame.Rect(self.msg_box.left+70, self.msg_box.top-20, 120, 20)
+        tag_font = pygame.font.Font('font_data\PixelMplus-20130602\PixelMplus12-Regular.ttf', 15)
+        pygame.draw.rect(screen, (255, 255, 255), tag_rect_point, 3)  # 縁
+        pygame.draw.rect(screen, (0, 0, 0), tag_rect_point)
+        name_text = tag_font.render(name, True, (255, 255, 255))
+        screen.blit(name_text, (self.msg_box.left+70, self.msg_box.top-20))
+        pygame.display.update()  
+    """   
         #text_render = self.font.render(self.msg_list[0:int(self.frame/10)], True, (255, 255, 255))
     
     def text_update(self, event:pygame.event):

@@ -5,6 +5,7 @@ import sys
 from Button import Button
 from LocalFunc import *
 import threading as th
+from EventSE import *
 
 
 class Monster:
@@ -83,7 +84,7 @@ class TypeingGame:
         self.end_flg = False
         self.count_down = CountDown(end_seconds)
         self.push_key:str = None
-    
+        self.play_se = PlayerSound()
     def return_question(self, index):
         q: list = list(self.q_dic.keys())
         return q[index]
@@ -108,6 +109,7 @@ class TypeingGame:
             if len(self.inputKey_list) == len(self.answer):
                 self.index += 1
                 self.inputKey_list = []
+                self.play_se.succsess.play()
                 self.count_down.start = pygame.time.get_ticks()
             else:
                 # print(len(self.inputKey_list))

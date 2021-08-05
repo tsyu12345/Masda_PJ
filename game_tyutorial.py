@@ -9,7 +9,8 @@ from LoadMap import Map
 from MsgBox import MsgBox
 from battleWindow import *
 from LocalFunc import *
-
+from EventSE import EventSound as ES
+from EventSE import PlayerSound as PS
 GS = 32
 DOWN, LEFT, RIGHT, UP = 0,1,2,3
 
@@ -82,6 +83,7 @@ def main():
     frame = 0
     clock = pygame.time.Clock()
     
+    hotoke = load_image('images/Characters/other/0205000021.png')
     #マップオブジェクト
     map = Map('Map_data/tyutorial_test.tmx')
     
@@ -90,24 +92,30 @@ def main():
         "ほっほっほ。ワシは仏じゃ。",
         "ここではこのゲームの操作方法について説明するぞ。",
         "",#1
-        "え？画面にキャラクターがいないって？",
+        "え？なんかしょぼいいって？",
         "",
-        "",#2
-        "決して、説明用のキャラを用意するのが面倒だったとか",
+        "ぶっ殺すぞ？",#2
+        "決して、マップ作るのが面倒だったとか",
         "締め切りまでに間に合わなかったとか、",
-        "そーゆーのではないから！！",#3
+        "そーゆーのではないからな。",#3
+        "それにいまEsc押そうとしただろう。",
+        "もう少し、がんばろうか？",
+        "",#
         "おほん。",
         "では、気を取り直して、まずキャラ操作の説明じゃ。",
         "",#4
         "基本操作は簡単。",
-        "キーボードの➞キーで動かすことができるぞ。",
+        "キーボードの→キーで動かすことができるぞ。",
         "",#5
         "すこし歩きまわってみるがよい。",
         "※→キーを押すとその方向に進みます。",
         "※Enterを押すと次に進みます。",#6
-        "", 
+        "",
         "",
         "",#
+        "どーかな。", 
+        "感覚はつかめたじゃろう。",
+        "",
         "次は、敵との戦い方について教えよう。",
         "" 
         "", #8
@@ -153,6 +161,9 @@ def main():
     move_cnt = 0
     disp_elps = False
 
+    event_sound = ES()
+    player_sound = PS()
+
     msg_box_point = (50, 400, 700, 150)
     msg_box = MsgBox(text_list)
     msg_box2 = MsgBox(text_list2)
@@ -169,6 +180,7 @@ def main():
                 main_flg = False
                 end_tyutorial = False
             for event in pygame.event.get():
+                event_sound.event_catch_se(event)
                 msg_box3.text_update(event)
                 #input_key = typeGame.input_word(event)
                 if event.type == QUIT:          # 閉じるボタンが押されたとき
@@ -208,6 +220,7 @@ def main():
             #イベント処理
             for event in pygame.event.get():
                 # 終了用のイベント処理
+                event_sound.event_catch_se(event)
                 if battle_ex:
                     msg_box2.text_update(event)
                 if battle:
@@ -229,12 +242,14 @@ def main():
             map.draw_map(screen)
             screen.blit(player_img, (player_x*GS, player_y*GS))
             if msg_box.disabled == False:
+                screen.blit(hotoke, (msg_box_point[0]+40, msg_box_point[1]-60))
                 msg_box.display(screen, msg_box_point)
+                #msg_box.name_tag(screen, 'ほとけ')
             if msg_box.end_flg and disp_elps:
                 pygame.draw.circle(screen, (255,0,0), (595,425), 30, 5)
             pygame.display.update()
             
-            if msg_box.msg_index == 18:
+            if msg_box.msg_index == 21:
                 msg_box.disabled = True
             else:
                 msg_box.disabled = False
@@ -253,6 +268,7 @@ def main():
             #text_render = font.render(text_list[0:int(frame/10)], True, (255, 255, 255))
             
             for event in pygame.event.get():
+                event_sound.event_catch_se(event)
                 msg_box.text_update(event)
                 if event.type == QUIT:          # 閉じるボタンが押されたとき
                     pygame.quit()
@@ -262,20 +278,20 @@ def main():
                         pygame.quit()
                         sys.exit()
                     if event.key == K_DOWN:
+                        player_sound.walk.play()
                         direction = DOWN
-                    #if is_movable(x, y+1):
                         player_y += 1
                     if event.key == K_LEFT:
+                        player_sound.walk.play()
                         direction = LEFT
-                #if is_movable(x-1, y):
                         player_x -= 1
                     if event.key == K_RIGHT:
+                        player_sound.walk.play()
                         direction = RIGHT
-                #if is_movable(x+1, y):
                         player_x += 1
                     if event.key == K_UP:
+                        player_sound.walk.play()
                         direction = UP
-                #if is_movable(x, y-1):
                         player_y -= 1            
 
 if __name__ == "__main__":

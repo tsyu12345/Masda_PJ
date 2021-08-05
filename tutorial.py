@@ -63,9 +63,16 @@ def main():
     posy = 410
     s_i = 0
     label = []
-
+    yes_se = pygame.mixer.Sound('sounds/OtherSounds/key_yes.wav')
+    no_se = pygame.mixer.Sound('sounds/OtherSounds/key_no.wav')
+    se1 = pygame.mixer.Sound('sounds/OtherSounds/serif.wav')
+    se2 = pygame.mixer.Sound('sounds/OtherSounds/www.wav')
+    se3 = pygame.mixer.Sound('sounds/OtherSounds/Question.wav')
+    se4 = pygame.mixer.Sound('sounds/OtherSounds/key_Enter.wav')
+    se_flg = False
     while tutorial:
         if bad_cnt == 3:
+            se_flg = False
             start_text = "ぼうけんをはじめなくてもいいですか？"
         pygame.draw.rect(screen, (0, 0, 0), Rect(0, 0, width, height))
         while first_select:
@@ -75,9 +82,18 @@ def main():
             screen.blit(text_render, (70, 410))  # メッセージの表示
             if counter >= len(start_text) + 5:
                 screen.blit(select_render, (70, 450))
-            pygame.display.update()
+                print(se_flg)
+                if se_flg == False:
+                    se3.play()
+                    se_flg = True
+                    
+            
+                
 
+            pygame.display.update()
             pygame.time.wait(100)
+            if counter < len(start_text):
+                se1.play()
             counter += 1
             text_render = font.render(
                 start_text[0:counter], True, (255, 255, 255))
@@ -90,12 +106,15 @@ def main():
                     sys.exit()
                 if event.type == KEYDOWN:  # キーEvent
                     if pygame.key.name(event.key) == "y":
+                        yes_se.play()
                         first_story = True
                         first_select = False
                         print("yes pressed")
 
                     elif pygame.key.name(event.key) == "n":
+                        no_se.play()
                         bad = True
+                        se_flg  = False
                         first_select = False
                         if bad_cnt == 3:
                             bad = False
@@ -109,8 +128,10 @@ def main():
         bd_t_cnt = 0
         if bad_cnt == 1:
             sub_msg = "いや、なんでよ。マジでもう一回聞くよ？＿"
+            se_flg = False
         if bad_cnt == 2:
             sub_msg = "お前何してんの。'y'押さないと何も始まんないよ！"
+            se_flg = False
         while bad:
             pygame.draw.rect(screen, (255, 255, 255), sub_msg_box, 6)  # 縁
             pygame.draw.rect(screen, (0, 0, 0), sub_msg_box)
@@ -122,7 +143,8 @@ def main():
             bd_t_cnt += 1
             sub_render = font.render(
                 sub_msg[0:bd_t_cnt], True, (255, 255, 255))
-
+            if bd_t_cnt < len(sub_msg):
+                se1.play()
             for event in pygame.event.get():
                 # 終了用のイベント処理
                 if event.type == QUIT:          # 閉じるボタンが押されたとき
@@ -131,6 +153,7 @@ def main():
 
                 if event.type == KEYDOWN:
                     if event.key == K_RETURN:
+                        se4.play()
                         bad_cnt += 1
                         bad = False
                         first_select = True
@@ -141,6 +164,7 @@ def main():
             pygame.draw.rect(screen, (0, 0, 0), sub_msg_box)
             end_render = font.render(
                 "はい！ひっかかった～～～乙～～。＿", True, (255, 255, 255))
+            se2.play()
             screen.blit(
                 end_render, (sub_msg_box_point[0]+5, sub_msg_box_point[1]+15))
 
@@ -153,6 +177,7 @@ def main():
 
                 if event.type == KEYDOWN:
                     if event.key == K_RETURN:
+                        se4.play()
                         op_end = False
                         end = True
 
@@ -167,6 +192,8 @@ def main():
             pygame.time.wait(100)
             counter += 1
             text_render = font.render(text[0:counter], True, (255, 255, 255))
+            if counter < len(text):
+                se1.play()
             if counter == len(text) + 5:
                 #その後のチュートリアルの処理
                 first_story = True
@@ -203,6 +230,7 @@ def main():
                         pygame.quit()
                         sys.exit()
                     if event.key == K_RETURN:
+                        se4.play()
                         try:
                             s_i += 3
                             label[0] = font.render(story_text[s_i], True, (255, 255, 255))

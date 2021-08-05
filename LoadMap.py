@@ -1,5 +1,6 @@
 import pygame 
 from pygame.locals import *
+from pygame.version import PygameVersion
 import pytmx
 from pytmx.util_pygame import load_pygame
 
@@ -11,11 +12,14 @@ def load_image(filename, colorkey=None):
     
 class Map: #Tiledからの読み込みと描画担当
 
-    row = 800 #map row
-    col = 640 #map column
-
     def __init__(self, data_path):
         self.gameMap = pytmx.load_pygame(data_path)
+
+    def calc_offset(self, screen:pygame.Surface ,px, py):
+        w, h = screen.get_size()    
+        offsetX = px - w/2
+        offsetY = py - h/2
+        return offsetX, offsetY
 
     def draw_map(self, screen):
         for layer in self.gameMap.visible_layers:
@@ -34,16 +38,7 @@ class Map: #Tiledからの読み込みと描画担当
             return False
         return True
 
-class ActionMap():
-    def __init__(self, map:Map, screen:pygame.Surface):
-        self.map = map
-        self.screen = screen
-    
-    def calc_offset(self, playerX, playerY):
-        w, h = self.screen.get_size()
-        offsetX = playerX - w/2
-        offsetY = playerY - h/2
-        return offsetX, offsetY
+
 
    
 

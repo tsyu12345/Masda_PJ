@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+import sys
 
 GS = 32
 def load_image(filename):
@@ -19,3 +20,13 @@ def split_image_load(image):
             surface.convert()
             imageList.append(surface)
     return imageList 
+
+def exit_game(event:pygame.event):
+    # 終了用のイベント処理
+    if event.type == QUIT:          # 閉じるボタンが押されたとき
+        pygame.quit()
+        sys.exit()
+    if event.type == KEYDOWN:       # キーを押したとき
+        if event.key == K_ESCAPE:   # Escキーが押されたとき
+            pygame.quit()
+            sys.exit()

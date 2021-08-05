@@ -239,7 +239,7 @@ def main():
             clock.tick(60)
             frame += 1
             player_img = player_imgs[int(direction*4 + frame/animcycle%3)]
-            map.draw_map(screen)
+            map.draw_map(screen, player_x*GS, player_y*GS)
             screen.blit(player_img, (player_x*GS, player_y*GS))
             if msg_box.disabled == False:
                 screen.blit(hotoke, (msg_box_point[0]+40, msg_box_point[1]-60))

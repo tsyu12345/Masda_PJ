@@ -9,6 +9,7 @@ from LoadMap import Map
 from MsgBox import MsgBox
 from battleWindow import *
 from LocalFunc import *
+from Charactor import Player
 from EventSE import EventSound as ES
 from EventSE import PlayerSound as PS
 GS = 32
@@ -27,17 +28,51 @@ def main():
     # 必要なオブジェクト（部品）
     main_flg =True
 
+    #Msg Box
+    story1 = [
+        "...",
+        "",
+        "",#
+        "なにかが空で光っている...",
+        "",
+        "",#
+        "マスダー、、マスダーよ。",
+        "聞くがいい。",
+        "ここからが魔物の住まう領域じゃ。",#
+        "各地に散らばる魔物を倒し、",
+        "果ての海の向こう岸にある、",
+        "魔王北原の城を目指すのじゃ！。",#
+        "...",
+        "",
+        "",#
+        "え？",
+        "どこに行けばいいかって？",
+        "",#
+        "そーですね、まずは",
+        "",
+        "",#
+        "",
+        "",
+        "",#
+        "",
+        "",
+        "",#
+
+        ]
+    msg_box = MsgBox(story1)
     #Map
     map = Map('Map_data/SyokyuMapData.tmx')
     #Player
-    player = split_image_load(load_image('images/Characters/hero/pipo-charachip027c.png'))
+    player = Player('images/Characters/hero/pipo-charachip027c.png', 10, 1, screen)
+    player.posX, player.posY = 400, 320
     #Draw Window
     while main_flg:
-
-        map.draw_map(screen)
+        pygame.draw.rect(screen, (0, 0, 0), Rect(0, 0, width, height))
+        map.draw_map(screen, player.posX, player.posY)
+        player.display(screen)
         pygame.display.update()
         for event in pygame.event.get():
-            
-
+            player.move(event)
+            exit_game(event)
 if __name__ == '__main__':
     main()

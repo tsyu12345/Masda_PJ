@@ -104,13 +104,12 @@ def main():
         #ワールドマップ画面
         #必要なオブジェクトを定義
         map = Map('Map_data/world_map.tmx')
-
         button = Button()
         course1_btn_point = (40, 500, 200, 50)
         course2_btn_point = (80, 420, 200, 50)
         course3_btn_point = (200, 330, 200, 50)
         course4_btn_point = (width - 300, 100, 200, 50)
-        c1_text = font.render("チュートリアル", True, (255, 255, 255))
+        c1_text = font.render("準備中", True, (255, 255, 255))
         c2_text = font.render("初級コース", True, (255, 255, 255))
         c3_text = font.render("中級コース", True, (255, 255, 255))
         c4_text = font.render("上級コース", True, (255, 255, 255))
@@ -124,7 +123,7 @@ def main():
         while corse_select:
             pygame.init()
             screen.fill((0, 0, 0))
-            map.draw_map(screen)
+            map.draw_map(screen, 0, 0)
             pygame.draw.rect(screen, (255, 255,255), c1_btn, 6) #縁
             pygame.draw.rect(screen, (255, 255,255), c2_btn, 6)
             pygame.draw.rect(screen, (255, 255,255), c3_btn, 6)

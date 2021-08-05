@@ -157,7 +157,7 @@ class TypeingGame:
 def main():
     # init pygame window
     pygame.init()
-    font = pygame.font.Font('font_data\PixelMplus-20130602\PixelMplus12-Regular.ttf', 20)
+    font = pygame.font.Font('font_data/PixelMplus-20130602/PixelMplus12-Regular.ttf', 20)
     font.set_bold(True)
     width = 800 #screeen
     height = 640

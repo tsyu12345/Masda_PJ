@@ -1,8 +1,8 @@
 """dependency library import"""
 import pygame
 from pygame.locals import *
-#from playsound import playsound
-import threading as th 
+from playsound import playsound
+from  multiprocessing import Pool
 import sys
 #import csv
 
@@ -12,7 +12,7 @@ from LocalFunc import *
 """import game file"""
 import tutorial
 import game_tyutorial
-
+import Syokyu
 
 class TitleText:
     def __init__(self, text, col_tuple):
@@ -53,6 +53,12 @@ def main():
     auth_caption = pygame.Rect(0, 600, width, height-600)
     caption = auth_font.render("Copyright 2021-06-23 チームたんじろう all rights reserved", True, (0,0,0))
     #BGM
+    #pygame.mixer.init()
+    #pygame.mixer.init(22050,-16,2,2048)
+    #pygame.mixer.music.load('8bit29.ogg')
+
+    p = Pool(1)
+    p.apply_async(playsound, args=(['sounds/OpeningThema/8bit29.mp3']))
     yes_se = pygame.mixer.Sound('sounds/clickSound/systen40.wav')
     no_se = pygame.mixer.Sound('sounds/clickSound/systen41.wav')
     #タイトルウィンドウ表示
@@ -103,16 +109,16 @@ def main():
         
         #ワールドマップ画面
         #必要なオブジェクトを定義
-        map = Map('Map_data/world_map.tmx')
+        map = load_image('Map_data/worldMapData.png')
         button = Button()
         course1_btn_point = (40, 500, 200, 50)
         course2_btn_point = (80, 420, 200, 50)
         course3_btn_point = (200, 330, 200, 50)
         course4_btn_point = (width - 300, 100, 200, 50)
-        c1_text = font.render("準備中", True, (255, 255, 255))
+        c1_text = font.render("チュートリアル", True, (255, 255, 255))
         c2_text = font.render("初級コース", True, (255, 255, 255))
-        c3_text = font.render("中級コース", True, (255, 255, 255))
-        c4_text = font.render("上級コース", True, (255, 255, 255))
+        c3_text = font.render("鋭意制作中", True, (100, 100, 100))
+        c4_text = font.render("近日公開", True, (100, 100, 100))
         c1_btn = button.btn_init(course1_btn_point)
         c2_btn = button.btn_init(course2_btn_point)
         c3_btn = button.btn_init(course3_btn_point)
@@ -120,10 +126,10 @@ def main():
         rn_text = font.render("もどる", True, (255, 255, 255))
         return_btn_point = (600, 500, 100, 50)
         return_btn = button.btn_init(return_btn_point)
+        pygame.init()
         while corse_select:
-            pygame.init()
             screen.fill((0, 0, 0))
-            map.draw_map(screen, 0, 0)
+            screen.blit(map, (0,0))
             pygame.draw.rect(screen, (255, 255,255), c1_btn, 6) #縁
             pygame.draw.rect(screen, (255, 255,255), c2_btn, 6)
             pygame.draw.rect(screen, (255, 255,255), c3_btn, 6)
@@ -154,6 +160,7 @@ def main():
                     if c1_btn.collidepoint(event.pos):
                         #ここにその後の処理を追加
                         yes_se.play()
+                        p.terminate()
                         print("チュートリアル button pressed!!")
                         tutorial.main()
                         pygame.init()
@@ -164,7 +171,10 @@ def main():
                     if c2_btn.collidepoint(event.pos):
                         #ここにその後の処理を追加
                         yes_se.play()
+                        p.terminate()
                         print("初級コース button pressed!!")
+                        Syokyu.main()
+                        pygame.init()
                         
                     if c3_btn.collidepoint(event.pos):
                         #ここにその後の処理を追加

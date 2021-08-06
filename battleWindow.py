@@ -25,16 +25,17 @@ class DisplayParameter:
         self.HP = HP
         self.level = Level
         self.text_col: tuple = (255, 255, 255)
-        font = pygame.font.Font(
+        self.font = pygame.font.Font(
             'font_data/PixelMplus-20130602/PixelMplus12-Regular.ttf', 20)
-        font.set_bold(True)
+        self.font.set_bold(True)
         col1 = "HP："
         col2 = "LV："
-        self.hp_text = font.render(col1+str(self.HP), True, self.text_col)
-        self.lv_text = font.render(col2+str(self.level), True, self.text_col)
+        self.hp_text = self.font.render(col1+str(self.HP), True, self.text_col)
+        self.lv_text = self.font.render(col2+str(self.level), True, self.text_col)
 
     def display(self, screen: pygame.display):
         width, height = screen.get_size()
+        self.hp_text = self.font.render("HP："+str(self.HP), True, self.text_col)
         screen.blit(self.hp_text, (width / 2, height-250))
         rect = pygame.Rect(width / 2 + 100, height-250, 20, 20)
         pygame.draw.rect(screen, (5, 150, 5), rect)
@@ -77,6 +78,7 @@ class CountDown():
 class TypeingGame:
     def __init__(self, question_dic: dict, end_seconds: int):
         self.q_dic = question_dic
+        self.damege = False
         self.inputKey_list = []
         self.index = 0
         self.question = self.return_question(self.index)
@@ -119,8 +121,11 @@ class TypeingGame:
                     self.inputKey_list.append(input)
         else: #when time out
             self.index += 1
+            self.damege = True
+            self.play_se.damege.play()
             self.inputKey_list = []
             self.count_down.start = pygame.time.get_ticks()
+
 
 
     def display(self, screen:pygame.Surface):
@@ -177,7 +182,6 @@ def main():
             'RPG':"rpg",
             '冒険':'bouken',
             'イス':"isu",
-
         }
         
             

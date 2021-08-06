@@ -85,7 +85,7 @@ def main():
     
     hotoke = load_image('images/Characters/other/0205000021.png')
     #マップオブジェクト
-    map = Map('Map_data/tyutorial_test.tmx')
+    map = Map('Map_data/tyutorialMapData.tmx')
     
     #メッセージボックス
     text_list = [

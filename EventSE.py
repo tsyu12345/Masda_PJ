@@ -10,6 +10,7 @@ class EventSound:
         self.yes_btn = pygame.mixer.Sound('sounds/clickSound/systen40.wav')
         self.no_btn = pygame.mixer.Sound('sounds/clickSound/systen41.wav')
         self.btn_select = pygame.mixer.Sound('sounds/OtherSounds/button_select.wav')
+        self.text_update = pygame.mixer.Sound('sounds/OtherSounds/serif.wav')
     
     def event_catch_se(self, event:pygame.event, btn=None):
         """Use in event for loop of pygame.event.get(). """
@@ -26,4 +27,5 @@ class PlayerSound:
     def __init__(self):
         self.walk = pygame.mixer.Sound('sounds/PlaySounds/walk.wav')
         self.succsess = pygame.mixer.Sound('sounds/PlaySounds/succsess.wav')
-
+        self.damege = pygame.mixer.Sound('sounds/PlaySounds/damege.wav')
+        self.levelUP = pygame.mixer.Sound('sounds/PlaySounds/levelup.wav')

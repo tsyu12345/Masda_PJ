@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 import sys
+from EventSE import *
 
 class MsgBox():
 
@@ -19,6 +20,7 @@ class MsgBox():
         self.frame_reset = False
         self.disped_list = [False, False, False]
         self.disabled = False
+        self.eventSE = EventSound()
     
     def display(self, screen:pygame.Surface, point:tuple):
         #print(self.msg_index)
@@ -53,6 +55,7 @@ class MsgBox():
         """call in main loop of pygame.event.get()"""
         if event.type == KEYDOWN:
             if event.key == K_RETURN:
+                self.eventSE.key_Enter.play()
                 try: 
                     self.msg_index += 3 
                     self.frame = 0       
@@ -66,6 +69,40 @@ class MsgBox():
                 except IndexError:
                     self.end_flg = True
                 
+class OneLineMsgBox(MsgBox):
+    def __init__(self, msg_list, points:Tuple):
+        super().__init__(msg_list)
+        self.frame = 0
+        self.index = 0
+        self.text = self.font.render("", True, (255, 255, 255))
+        self.points:Tuple = points
+
+    def display(self, screen:pygame.Surface):
+        try: 
+            msg_box = pygame.Rect(self.points[0], self.points[1], self.points[2], self.points[3])
+            pygame.draw.rect(screen, (255, 255, 255), msg_box, 6)  # 縁
+            pygame.draw.rect(screen, (0, 0, 0), msg_box)  # メッセージボックス
+            screen.blit(self.text, (self.points[0]+15, self.points[1]+ 15))
+            #print("blited")
+            pygame.display.update()
+            #pygame.time.wait(30)
+            self.frame += 1
+            self.text = self.font.render(self.msg_list[self.index][0:self.frame], True, (255, 255, 255))
+            if self.frame <= len(self.msg_list[self.msg_index]):
+                self.eventSE.text_update.play()
+        except IndexError:
+            self.end_flg = True    
+
+    def text_update(self, event:pygame.event):
+        try:
+            if self.frame >= len(self.msg_list[self.index]):
+                if event.type == KEYDOWN:
+                    if event.key == K_RETURN:
+                        self.eventSE.key_Enter.play()
+                        self.frame = 0
+                        self.index += 1
+        except IndexError:
+            self.end_flg = True    
 
 def example():
     # pygame window initialization

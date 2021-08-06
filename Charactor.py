@@ -20,12 +20,12 @@ DOWN, LEFT, RIGHT, UP = 0, 1, 2, 3
 
 class Character:
 
-    def __init__(self, img_filename, HP, Level, screen:pygame.Surface):
+    def __init__(self, img_filename, HP, Level, screen:pygame.Surface, pos_loist=[0, 0]):
         self.HP = HP
         self.Level = Level
         self.imgs = split_image_load(load_image(img_filename))
-        self.posX = 0
-        self.posY = 0
+        self.posX = pos_loist[0]
+        self.posY = pos_loist[1]
         self.animcycle = 24
         self.frame = 0
         self.clock = pygame.time.Clock()
@@ -33,10 +33,21 @@ class Character:
 
     def display(self, screen):
         self.clock.tick(60)
-        #frame += 1
-        #img = self.imgs[int(self.direction*4 + frame/animcycle%3)]
+        self.frame += 1
+        img = self.imgs[int(0*4 + self.frame/self.animcycle%3)]
+        screen.blit(img, (self.posX, self.posY))
         pygame.display.update()
 
+class MobCharactor():
+    def __init__(self, img, screen, pos_loist):
+        self.screen = screen
+        self.imgs = split_image_load(load_image(img))
+        self.poslist = pos_loist
+
+    def displpay(self):
+        for pos in self.poslist:
+            imgs = self.imgs[int(0*4 + frame/animcycle%3)]
+            screen.blit(img, ())
 
 class Player(Character):
     def __init__(self, img_filename, HP, Level, screen:pygame.Surface):
@@ -56,14 +67,19 @@ class Player(Character):
         self.clock.tick(60)
         self.frame += 1
         img = self.imgs[int(self.direction*4 + self.frame/self.animcycle%3)]
-        if offX < 0 or offY < 0 or offX >= w or offY >= h:
-            print("in")
-            screen.blit(img, (self.posX, self.posY))
-        else:
-            screen.blit(img, (self.posX-offX, self.posY-offY))
+        if offX < 0:
+            offX = 0
+        if offX > w:
+            offX = w
+        if offY < 0:
+            offY = 0
+        if offY > h:
+            offY = h
+            
+        screen.blit(img, (self.posX-offX, self.posY-offY))
         pygame.display.update()
         print("x, y:" + str(self.posX) +", " +str(self.posY))
-        print("offXY:" + str(offX) + "," +str(offY))
+        #print("offXY:" + str(offX) + "," +str(offY))
         if self.frame > 100:
             self.frame = 0
         #print((self.posX-offX, self.posY-offY))

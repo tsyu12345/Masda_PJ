@@ -209,8 +209,8 @@ def main():
                 screen.blit(hotoke, (msg_box_point[0]+40, msg_box_point[1]-60))
                 msg_box.display(screen, msg_box_point)
                 #msg_box.name_tag(screen, 'ほとけ')
-            if msg_box.end_flg and disp_elps:
-                pygame.draw.circle(screen, (255,0,0), (595+player.offX,425+player.offY), 30, 5)
+            #if msg_box.end_flg and disp_elps:
+               # pygame.draw.circle(screen, (255,0,0), (595+player.offX,425+player.offY), 30, 5)
             pygame.display.update()
             
             if msg_box.msg_index == 21:

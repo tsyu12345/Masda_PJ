@@ -11,6 +11,8 @@ from battleWindow import *
 from LocalFunc import *
 from EventSE import EventSound as ES
 from EventSE import PlayerSound as PS
+from playsound import playsound
+from  multiprocessing import Pool
 GS = 32
 DOWN, LEFT, RIGHT, UP = 0,1,2,3
 
@@ -78,7 +80,7 @@ def main():
     #player オブジェクト(仮)
     player_imgs = split_image_load(load_image('images/Characters/hero/pipo-charachip027c.png'))
     direction = DOWN
-    player_x, player_y = 200/GS,150/GS #初期位置
+    player_x, player_y = 250/GS,300/GS #初期位置
     animcycle = 24
     frame = 0
     clock = pygame.time.Clock()
@@ -168,7 +170,8 @@ def main():
     msg_box = MsgBox(text_list)
     msg_box2 = MsgBox(text_list2)
     msg_box3 = MsgBox(text_list3)
-    
+    p = Pool(1)
+    p.apply_async(playsound, args=(['sounds/OpeningThema/8bit22.mp3']))
     while main_flg:
         
         while end_tyutorial:
@@ -179,6 +182,7 @@ def main():
             if msg_box3.end_flg:
                 main_flg = False
                 end_tyutorial = False
+                p.terminate()
             for event in pygame.event.get():
                 event_sound.event_catch_se(event)
                 msg_box3.text_update(event)

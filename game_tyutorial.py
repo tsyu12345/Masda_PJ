@@ -6,6 +6,7 @@ import sys
 import csv
 import os
 from LoadMap import Map
+from Charactor import Player
 from MsgBox import MsgBox
 from battleWindow import *
 from LocalFunc import *
@@ -15,51 +16,6 @@ from playsound import playsound
 from  multiprocessing import Pool
 GS = 32
 DOWN, LEFT, RIGHT, UP = 0,1,2,3
-
-
-class Player:
-    animcycle = 24  # アニメーション速度
-    frame = 0
-
-    def __init__(self, name, pos, dir):
-        self.name = name  # プレイヤー名（ファイル名と同じ）
-        self.images = split_image_load(load_image("%s.png" % name))
-        self.image = self.images[0]  # 描画中のイメージ
-        self.x, self.y = pos[0], pos[1]  # 座標（単位：マス）
-        self.rect = self.image.get_rect(topleft=(self.x*GS, self.y*GS))
-        self.direction = dir
-
-    def update(self):
-        # キャラクターアニメーション（frameに応じて描画イメージを切り替える）
-        self.frame += 1
-        self.image = self.images[self.direction *
-                                 4+self.frame/self.animcycle % 4]
-
-    def move(self, dir, map):
-        """プレイヤーを移動"""
-        if dir == DOWN:
-            self.direction = DOWN
-            if map.is_movable(self.x, self.y+1):
-                self.y += 1
-                self.rect.top += GS
-        elif dir == LEFT:
-            self.direction = LEFT
-            if map.is_movable(self.x-1, self.y):
-                self.x -= 1
-                self.rect.left -= GS
-        elif dir == RIGHT:
-            self.direction = RIGHT
-            if map.is_movable(self.x+1, self.y):
-                self.x += 1
-                self.rect.left += GS
-        elif dir == UP:
-            self.direction = UP
-            if map.is_movable(self.x, self.y-1):
-                self.y -= 1
-                self.rect.top -= GS
-
-    def draw(self, screen):
-        screen.blit(self.image, self.rect)
 
 def main():
     pygame.init()
@@ -77,10 +33,12 @@ def main():
     battle = False
     battle_ex = True
     end_tyutorial = False
-    #player オブジェクト(仮)
-    player_imgs = split_image_load(load_image('images/Characters/hero/pipo-charachip027c.png'))
+    #player オブジェクト
+    player = Player('images/Characters/hero/pipo-charachip027c.png', 10, 1, screen)
+    player.posX, player.posY = 250, 300
+    #player_imgs = split_image_load(load_image('images/Characters/hero/pipo-charachip027c.png'))
     direction = DOWN
-    player_x, player_y = 250/GS,300/GS #初期位置
+    #player_x, player_y = 250/GS,300/GS #初期位置
     animcycle = 24
     frame = 0
     clock = pygame.time.Clock()
@@ -242,15 +200,17 @@ def main():
         while move_play:
             clock.tick(60)
             frame += 1
-            player_img = player_imgs[int(direction*4 + frame/animcycle%3)]
-            map.draw_map(screen, player_x*GS, player_y*GS)
-            screen.blit(player_img, (player_x*GS, player_y*GS))
+            #player_img = player_imgs[int(direction*4 + frame/animcycle%3)]
+            #map.draw_map(screen, player_x*GS, player_y*GS)
+            map.draw_map(screen, player.posX, player.posY)
+            player.display(screen)
+            #screen.blit(player_img, (player_x*GS, player_y*GS))
             if msg_box.disabled == False:
                 screen.blit(hotoke, (msg_box_point[0]+40, msg_box_point[1]-60))
                 msg_box.display(screen, msg_box_point)
                 #msg_box.name_tag(screen, 'ほとけ')
             if msg_box.end_flg and disp_elps:
-                pygame.draw.circle(screen, (255,0,0), (595,425), 30, 5)
+                pygame.draw.circle(screen, (255,0,0), (595+player.offX,425+player.offY), 30, 5)
             pygame.display.update()
             
             if msg_box.msg_index == 21:
@@ -263,7 +223,7 @@ def main():
                 else: 
                     disp_elps = True   
                 msg_box.disabled = True
-                if player_x*GS == 584.0 and player_y*GS == 406.0:
+                if player.posX == 1114 and player.posY == 844:
                     type_play = True
                     move_play = False
                     break
@@ -272,31 +232,11 @@ def main():
             #text_render = font.render(text_list[0:int(frame/10)], True, (255, 255, 255))
             
             for event in pygame.event.get():
+                exit_game(event)
+                player.move(event)
                 event_sound.event_catch_se(event)
                 msg_box.text_update(event)
-                if event.type == QUIT:          # 閉じるボタンが押されたとき
-                    pygame.quit()
-                    sys.exit()
-                if event.type == KEYDOWN:       # キーを押したとき
-                    if event.key == K_ESCAPE:   # Escキーが押されたとき
-                        pygame.quit()
-                        sys.exit()
-                    if event.key == K_DOWN:
-                        player_sound.walk.play()
-                        direction = DOWN
-                        player_y += 1
-                    if event.key == K_LEFT:
-                        player_sound.walk.play()
-                        direction = LEFT
-                        player_x -= 1
-                    if event.key == K_RIGHT:
-                        player_sound.walk.play()
-                        direction = RIGHT
-                        player_x += 1
-                    if event.key == K_UP:
-                        player_sound.walk.play()
-                        direction = UP
-                        player_y -= 1            
+                
 
 if __name__ == "__main__":
     main()

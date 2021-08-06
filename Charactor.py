@@ -20,12 +20,12 @@ DOWN, LEFT, RIGHT, UP = 0, 1, 2, 3
 
 class Character:
 
-    def __init__(self, img_filename, HP, Level, screen:pygame.Surface, pos_loist=[0, 0]):
+    def __init__(self, img_filename, HP, Level, screen:pygame.Surface):
         self.HP = HP
         self.Level = Level
         self.imgs = split_image_load(load_image(img_filename))
-        self.posX = pos_loist[0]
-        self.posY = pos_loist[1]
+        self.posX = 0
+        self.posY = 0
         self.animcycle = 24
         self.frame = 0
         self.clock = pygame.time.Clock()

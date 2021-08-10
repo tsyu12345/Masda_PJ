@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 import sys
-from EventSE import *
+from GameModules.EventSE import *
 
 class MsgBox():
 
@@ -70,12 +70,12 @@ class MsgBox():
                     self.end_flg = True
                 
 class OneLineMsgBox(MsgBox):
-    def __init__(self, msg_list, points:Tuple):
+    def __init__(self, msg_list, points:tuple):
         super().__init__(msg_list)
         self.frame = 0
         self.index = 0
         self.text = self.font.render("", True, (255, 255, 255))
-        self.points:Tuple = points
+        self.points:tuple = points
 
     def display(self, screen:pygame.Surface):
         try: 

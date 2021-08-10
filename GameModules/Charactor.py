@@ -1,16 +1,10 @@
 import pygame
 from pygame.locals import *
-import pytmx
-from pytmx.util_pygame import load_pygame
-import sys
-import csv
-import os
-from LoadMap import Map
-from MsgBox import MsgBox
-from battleWindow import *
-from LocalFunc import *
-from EventSE import EventSound as ES
-from EventSE import PlayerSound as PS
+from GameModules.LoadMap import Map
+from GameModules.battleWindow import *
+from GameModules.LocalFunc import *
+from GameModules.EventSE import EventSound as ES
+from GameModules.EventSE import PlayerSound as PS
 
 GS = 32
 M_ROW = 40

@@ -1,11 +1,11 @@
-from LoadMap import load_image
+#from LoadMap import load_image
 import pygame
 from pygame.locals import *
 import sys
-from Button import Button
-from LocalFunc import *
-import threading as th
-from EventSE import *
+from GameModules.Button import Button
+from GameModules.LocalFunc import *
+#import threading as th
+from GameModules.EventSE import *
 
 
 class Monster:

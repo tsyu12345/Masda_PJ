@@ -1,16 +1,8 @@
 import pygame 
 from pygame.locals import *
-from pygame.version import PygameVersion
 import pytmx
-from pytmx.util_pygame import load_pygame
 
 GS = 32
-
-def load_image(filename, colorkey=None):
-    image = pygame.image.load(filename)
-    image = image.convert_alpha()
-    return image
-    
 class Map: #Tiledからの読み込みと描画担当
     row = 40
     col = 50

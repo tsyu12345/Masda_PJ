@@ -1,15 +1,14 @@
 import pygame
 from pygame.locals import *
+from pygame import mixer
 import sys
-from GameModules.LoadMap import Map
-from GameModules.Charactor import Player
-from GameModules.MsgBox import MsgBox
-from GameModules.battleWindow import *
-from GameModules.LocalFunc import *
-from GameModules.EventSE import EventSound as ES
-from GameModules.EventSE import PlayerSound as PS
-from playsound import playsound
-from  multiprocessing import Pool
+from ..GameModules.LoadMap import Map
+from ..GameModules.Charactor import Player
+from ..GameModules.MsgBox import MsgBox
+from ..GameModules.battleWindow import *
+from ..GameModules.LocalFunc import *
+from ..GameModules.EventSE import EventSound as ES
+from ..GameModules.EventSE import PlayerSound as PS
 
 GS = 32
 DOWN, LEFT, RIGHT, UP = 0,1,2,3
@@ -125,8 +124,11 @@ def main():
     msg_box = MsgBox(text_list)
     msg_box2 = MsgBox(text_list2)
     msg_box3 = MsgBox(text_list3)
-    p = Pool(1)
-    p.apply_async(playsound, args=(['sounds/OpeningThema/8bit22.mp3']))
+    #p = Pool(1)
+    #p.apply_async(playsound, args=(['sounds/OpeningThema/8bit22.mp3']))
+    mixer.init()
+    mixer.music.load('sounds/OpeningThema/8bit22.mp3')
+    mixer.play(-1)
     while main_flg:
         
         while end_tyutorial:
@@ -137,7 +139,8 @@ def main():
             if msg_box3.end_flg:
                 main_flg = False
                 end_tyutorial = False
-                p.terminate()
+                #p.terminate()
+                mixer.music.stop()
             for event in pygame.event.get():
                 event_sound.event_catch_se(event)
                 msg_box3.text_update(event)
@@ -149,7 +152,6 @@ def main():
                     if event.key == K_ESCAPE:   # Escキーが押されたとき
                         pygame.quit()
                         sys.exit()
-
 
         while type_play:
             #Typing_tyutorial

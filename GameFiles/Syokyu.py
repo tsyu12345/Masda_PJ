@@ -1,15 +1,14 @@
 import pygame
 from pygame.locals import *
-from pytmx.util_pygame import load_pygame
-from GameModules.LoadMap import Map
-from GameModules.MsgBox import MsgBox, OneLineMsgBox
-from GameModules.battleWindow import *
-from GameModules.LocalFunc import *
-from GameModules.Charactor import Player
-from GameModules.EventSE import EventSound as ES
-from GameModules.EventSE import PlayerSound as PS
-from playsound import playsound
-from  multiprocessing import Pool
+from pygame import mixer
+#from pytmx.util_pygame import load_pygame
+from ..GameModules.LoadMap import Map
+from ..GameModules.MsgBox import MsgBox, OneLineMsgBox
+from ..GameModules.battleWindow import *
+from ..GameModules.LocalFunc import *
+from ..GameModules.Charactor import Player
+from ..GameModules.EventSE import EventSound as ES
+from ..GameModules.EventSE import PlayerSound as PS
 
 GS = 32
 DOWN, LEFT, RIGHT, UP = 0,1,2,3
@@ -137,9 +136,12 @@ def main():
     announce_box_point = (50, height/2, width - 100, 80)
     announce_box = OneLineMsgBox(announce_list,announce_box_point)
     announce_box2 = OneLineMsgBox(announce_list2, announce_box_point)
-    p = Pool(1)
-    p.apply_async(playsound, args=(['sounds/OpeningThema/8bit01.mp3']))
+    #p = Pool(1)
+    #p.apply_async(playsound, args=(['sounds/OpeningThema/8bit01.mp3']))
     pygame.init()
+    mixer.init()
+    mixer.music.load('sounds/OpeningThema/8bit01.mp3')
+    mixer.music.play(-1)
     while main_flg:
         #pygame.draw.rect(screen, (0, 0, 0), Rect(0, 0, width, height))
         map.draw_map(screen, player.posX, player.posY)
@@ -169,7 +171,8 @@ def main():
         if player.posX ==816 and player.posY ==192:
             battle = True
             main_flg = False
-            p.terminate()
+            #p.terminate()
+            mixer.music.stop()
             break
            
         pygame.display.update()
@@ -211,8 +214,11 @@ def main():
     typeGame.count_down.start_cnt()
     gameOver = False
     gameClear = False
-    p = Pool(1)
-    p.apply_async(playsound, args=(['sounds/OpeningThema/8bit28.mp3']))
+    #p = Pool(1)
+    #p.apply_async(playsound, args=(['sounds/OpeningThema/8bit28.mp3']))
+    mixer.init()
+    mixer.music.load('sounds/OpeningThema/8bit28.mp3')
+    mixer.music.play(-1)
     while battle:
         pygame.draw.rect(screen, (0, 0, 0), Rect(0, 0, width, height))
         monster.display(screen)
@@ -227,14 +233,15 @@ def main():
             typeGame.damege = False
         
         if player.HP == 0:
-            p.terminate()
+            #p.terminate()
             gameOver = True
             battle = False
             break
 
         if typeGame.end_flg:
             print("in")
-            p.terminate()
+            #p.terminate()
+            mixer.music.stop()
             gameClear = True
             battle = False
             break
@@ -278,8 +285,11 @@ def main():
     msg_box_over = MsgBox(story_over)
     msg_box_point = (50, 400, 700, 150)
     hotoke = load_image('images/Characters/other/0205000021.png')
-    p = Pool(1)
-    p.apply_async(playsound, args=(['sounds/OpeningThema/gameover.mp3']))
+    #p = Pool(1)
+    #p.apply_async(playsound, args=(['sounds/OpeningThema/gameover.mp3']))
+    mixer.init()
+    mixer.music.load('sounds/OpeningThema/gameover.mp3')
+    mixer.music.play(-1)
     while gameOver:
         if msg_box_over.msg_index >= 6:
             pygame.time.wait(30)
@@ -291,7 +301,8 @@ def main():
         msg_box_over.display(screen, msg_box_point)
         pygame.display.update()
         if msg_box_over.end_flg:
-            p.terminate()
+            #p.terminate()
+            mixer.music.stop()
             break
         for event in pygame.event.get():
             msg_box_over.text_update(event)
@@ -343,8 +354,11 @@ def main():
     msg_box_point = (50, 400, 700, 150)
     housyuu_se = PlayerSound()
     hotoke = load_image('images/Characters/other/0205000021.png')
-    p = Pool(1)
-    p.apply_async(playsound, args=(['sounds/OpeningThema/neoRock33.mp3']))
+    #p = Pool(1)
+    #p.apply_async(playsound, args=(['sounds/OpeningThema/neoRock33.mp3']))
+    mixer.init()
+    mixer.music.load('sounds/OpeningThema/neoRock33.mp3')
+    mixer.music.play(-1)
     while gameClear:
         if msg_box2.msg_index == 15:
             housyuu_se.levelUP.play()
@@ -359,7 +373,8 @@ def main():
         
         pygame.display.update()
         if msg_box2.end_flg:
-            p.terminate()
+            #p.terminate()
+            mixer.music.stop()
             break
         for event in pygame.event.get():
             msg_box2.text_update(event)

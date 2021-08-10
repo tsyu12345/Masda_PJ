@@ -1,16 +1,12 @@
 import pygame
-import time
 from pygame.locals import *
 from pygame import mixer
 import sys
-import csv
-
 
 def main():
     # pygame window initialization
     pygame.init()
-    font = pygame.font.Font(
-        'font_data/PixelMplus-20130602/PixelMplus12-Regular.ttf', 26)
+    font = pygame.font.Font('font_data/PixelMplus-20130602/PixelMplus12-Regular.ttf', 26)
     font.set_bold(True)
     width = 800  # screeen
     height = 640

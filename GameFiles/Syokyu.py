@@ -1,15 +1,13 @@
 import pygame
 from pygame.locals import *
-import pytmx
 from pytmx.util_pygame import load_pygame
-from LoadMap import Map
-from MsgBox import MsgBox, OneLineMsgBox
-from battleWindow import *
-from LocalFunc import *
-from Charactor import Character
-from Charactor import Player
-from EventSE import EventSound as ES
-from EventSE import PlayerSound as PS
+from GameModules.LoadMap import Map
+from GameModules.MsgBox import MsgBox, OneLineMsgBox
+from GameModules.battleWindow import *
+from GameModules.LocalFunc import *
+from GameModules.Charactor import Player
+from GameModules.EventSE import EventSound as ES
+from GameModules.EventSE import PlayerSound as PS
 from playsound import playsound
 from  multiprocessing import Pool
 

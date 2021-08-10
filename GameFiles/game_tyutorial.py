@@ -1,19 +1,16 @@
 import pygame
 from pygame.locals import *
-import pytmx
-from pytmx.util_pygame import load_pygame
 import sys
-import csv
-import os
-from LoadMap import Map
-from Charactor import Player
-from MsgBox import MsgBox
-from battleWindow import *
-from LocalFunc import *
-from EventSE import EventSound as ES
-from EventSE import PlayerSound as PS
+from GameModules.LoadMap import Map
+from GameModules.Charactor import Player
+from GameModules.MsgBox import MsgBox
+from GameModules.battleWindow import *
+from GameModules.LocalFunc import *
+from GameModules.EventSE import EventSound as ES
+from GameModules.EventSE import PlayerSound as PS
 from playsound import playsound
 from  multiprocessing import Pool
+
 GS = 32
 DOWN, LEFT, RIGHT, UP = 0,1,2,3
 

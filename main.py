@@ -7,13 +7,12 @@ import sys
 #import csv
 
 """import game module"""
-from LoadMap import Map
-from LocalFunc import *
+#from GameModules.LoadMap import Map
+from GameModules.LocalFunc import *
 """import game file"""
-import tutorial
-import game_tyutorial
-import Syokyu
-
+from GameFiles import game_tyutorial
+from GameFiles import tutorial
+from GameFiles import Syokyu
 class TitleText:
     def __init__(self, text, col_tuple):
         font = pygame.font.Font(

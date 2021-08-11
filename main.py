@@ -175,8 +175,9 @@ def main():
                         mixer.music.stop()
                         print("初級コース button pressed!!")
                         Syokyu.main()
-                        pygame.init()
-                        mixer.music.play()
+                        #pygame.init()
+                        mixer.music.load('sounds/OpeningThema/8bit29.mp3')
+                        mixer.music.play(-1)
                     if c3_btn.collidepoint(event.pos):
                         #ここにその後の処理を追加
                         yes_se.play()

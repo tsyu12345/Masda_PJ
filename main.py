@@ -8,6 +8,8 @@ import sys
 """import game module"""
 #from GameModules.LoadMap import Map
 from Modules.GameModules.LocalFunc import *
+from Modules.GameModules.Menu import MainMenu
+from Modules.GameModules.EventSE import EventSound
 """import game file"""
 from Modules import game_tyutorial
 from Modules import tutorial
@@ -27,6 +29,39 @@ class Button:
         button = pygame.Rect(point_tuple[0], point_tuple[1], point_tuple[2], point_tuple[3])
         return button 
 
+class SelectCorseCarsol:
+    def __init__(self):
+        self.carsol = [[10, 500],[30, 550],[10, 600],]
+        self.carsol_cnt = 0
+        self.pos_list = [
+            [[10, 500],[30, 550],[10, 600]],#チュートリアル
+            [[],[],[]],#初級
+            [[],[],[]],#中級
+            [[],[],[]],#上級
+            [[],[],[]],#もどる
+            ]
+
+    def display(self, screen):
+        pygame.draw.polygon(screen, (255, 255, 255), self.carsol)
+    
+    def carsol_controle(self, event):
+        if event.type == KEYDOWN:
+            if event.key == K_RETURN:
+                pass
+                #self.sound.key_Enter.play()
+
+            if self.carsol_cnt < 5:
+                if event.key == K_RIGHT:
+                    self.carsol_cnt += 1
+                    self.sound.menu_carsol_move.play()
+                    if self.carsol_cnt == 1:
+                        self.carsol = [[10, 500],[30, 550],[10, 600],]
+
+            if self.carsol_cnt != 0:
+                if event.key == K_LEFT:
+                    self.carsol_cnt -= 1
+                    self.sound.menu_carsol_move.play()
+                    
 def main():
     pygame.init()
     font = pygame.font.Font('font_data/PixelMplus-20130602/PixelMplus12-Regular.ttf', 20)
@@ -40,21 +75,24 @@ def main():
     bg = load_image('images/top_page/おまけピクチャ/800×600/pipo-pic001.jpg')#背景画像
     bg_rect = bg.get_rect()
     title = TitleText("マス打", (0, 0, 0))
-    button = Button()
-    s_btn_point = (width / 2 - 80, height / 2, 200, 50)
-    e_btn_point = (width / 2 - 80, height / 2 + 100, 200, 50)
-    s_text = font.render("はじめる", True, (255, 255, 255))
-    e_text = font.render("おわる", True, (255, 255, 255))
-    start = button.btn_init(s_btn_point)
-    end = button.btn_init(e_btn_point)
-    auth_font = pygame.font.Font(
-        'font_data/PixelMplus-20130602/PixelMplus12-Regular.ttf', 20)
+    menu_list = ["はじめる", "おわる", "エンドロール"]
+    start_menu = MainMenu(menu_list, (0, 0, 0), (width / 2 - 100, height / 2, 250, 160), 25)
+    eventSE = EventSound()
+    #button = Button()
+    #s_btn_point = (width / 2 - 80, height / 2, 200, 50)
+    #e_btn_point = (width / 2 - 80, height / 2 + 100, 200, 50)
+    #s_text = font.render("はじめる", True, (255, 255, 255))
+    #e_text = font.render("おわる", True, (255, 255, 255))
+    #start = button.btn_init(s_btn_point)
+    #end = button.btn_init(e_btn_point)
+    auth_font = pygame.font.Font('font_data/PixelMplus-20130602/PixelMplus12-Regular.ttf', 20)
     auth_caption = pygame.Rect(0, 600, width, height-600)
     caption = auth_font.render("Copyright 2021-06-23 チームたんじろう all rights reserved", True, (0,0,0))
     #BGM
     mixer.init()
     #pygame.mixer.init(22050,-16,2,2048)
     mixer.music.load('sounds/OpeningThema/8bit29.mp3')
+    mixer.music.set_volume(0.2)
     mixer.music.play(-1)
     #p = Pool(1)
     #p.apply_async(playsound, args=(['sounds/OpeningThema/8bit29.mp3']))
@@ -68,43 +106,34 @@ def main():
     while top_page:#全体のループ
 
         while title_page:
+            print(start_menu.carsol_cnt)
             screen.blit(bg, bg_rect)
             title.display(screen)
-            pygame.draw.rect(screen, (255, 255,255), start, 6) #縁
-            pygame.draw.rect(screen, (255, 255,255), end, 6)
-            pygame.draw.rect(screen, (0, 0, 0), start)
-            pygame.draw.rect(screen, (0, 0, 0), end)
-            #以下はボタンテキストの描画screen.blit(btnObject, (x, y))
-            screen.blit(s_text, (s_btn_point[0] + 60 , s_btn_point[1] + 15))
-            screen.blit(e_text, (e_btn_point[0] + 63, e_btn_point[1] + 15))
+            start_menu.display(screen)
             #著作権表示
             pygame.draw.rect(screen, (20, 200, 20), auth_caption)
             screen.blit(caption, (100+20, 600+15))
             pygame.display.update()
             # イベント処理
             for event in pygame.event.get():
-                # 終了用のイベント処理
+                start_menu.carsol_controle(event)
                 if event.type == QUIT:          # 閉じるボタンが押されたとき
                     pygame.quit()
                     sys.exit()
                 if event.type == KEYDOWN:       # キーを押したとき
+                    if event.key == K_RETURN:
+                        if start_menu.carsol_cnt == 0:
+                            eventSE.yes_btn.play()
+                            corse_select = True
+                            title_page = False
+                        if start_menu.carsol_cnt == 1:
+                            eventSE.no_btn.play()
+                            pygame.quit()
+                            sys.exit()    
                     if event.key == K_ESCAPE:   # Escキーが押されたとき
                         pygame.quit()
                         sys.exit()
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if start.collidepoint(event.pos):
-                        #ここにその後の処理を追加
-                        yes_se.play()
-                        print("start button pressed!!")
-                        #click1_se.start()
-                        corse_select = True
-                        title_page = False
-        
-                    elif end.collidepoint(event.pos):
-                        no_se.play()
-                        print("end button presssed!!")
-                        pygame.quit()
-                        sys.exit()
+                
         
         #ワールドマップ画面
         #必要なオブジェクトを定義
@@ -145,6 +174,7 @@ def main():
             screen.blit(c3_text, (course3_btn_point[0] + 50 , course3_btn_point[1] + 15))
             screen.blit(c4_text, (course4_btn_point[0] + 50 , course4_btn_point[1] + 15))
             screen.blit(rn_text, (return_btn_point[0] + 20, return_btn_point[1] + 15))
+            
             pygame.display.update()
 
             for event in pygame.event.get():
@@ -178,6 +208,7 @@ def main():
                         #pygame.init()
                         mixer.music.load('sounds/OpeningThema/8bit29.mp3')
                         mixer.music.play(-1)
+                    
                     if c3_btn.collidepoint(event.pos):
                         #ここにその後の処理を追加
                         yes_se.play()

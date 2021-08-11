@@ -9,6 +9,7 @@ const stylesHandler = isProduction
   ? MiniCssExtractPlugin.loader
   : "style-loader";
 
+
 const config = {
   entry: "./src/index.ts",
   output: {
@@ -31,7 +32,11 @@ const config = {
       },
       {
         test: /\.css$/i,
-        use: [stylesHandler, "css-loader"],
+        use: [
+          stylesHandler, 
+          "css-loader",
+          "style-loader",
+        ],
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,

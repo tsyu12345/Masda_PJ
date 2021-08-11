@@ -1,8 +1,7 @@
 import pygame
 from pygame.locals import *
 import sys
-from GameModules.EventSE import *
-
+from .EventSE import EventSound
 class MsgBox():
 
     def __init__(self, msg_list:list):

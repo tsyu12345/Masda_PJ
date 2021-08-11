@@ -26,5 +26,5 @@ class PlayerSound:
     def __init__(self):
         self.walk = pygame.mixer.Sound('sounds/PlaySounds/walk.wav')
         self.succsess = pygame.mixer.Sound('sounds/PlaySounds/succsess.wav')
-        self.damege = pygame.mixer.Sound('sounds/PlaySounds/damege.wav')
+        self.damege = pygame.mixer.Sound('sounds/PlaySounds/powerdown02.wav')
         self.levelUP = pygame.mixer.Sound('sounds/PlaySounds/levelup.wav')

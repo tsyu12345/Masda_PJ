@@ -2,10 +2,10 @@
 import pygame
 from pygame.locals import *
 import sys
-from GameModules.Button import Button
-from GameModules.LocalFunc import *
+from .Button import Button
+from .LocalFunc import *
 #import threading as th
-from GameModules.EventSE import *
+from .EventSE import *
 
 
 class Monster:

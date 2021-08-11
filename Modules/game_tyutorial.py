@@ -2,13 +2,13 @@ import pygame
 from pygame.locals import *
 from pygame import mixer
 import sys
-from ..GameModules.LoadMap import Map
-from ..GameModules.Charactor import Player
-from ..GameModules.MsgBox import MsgBox
-from ..GameModules.battleWindow import *
-from ..GameModules.LocalFunc import *
-from ..GameModules.EventSE import EventSound as ES
-from ..GameModules.EventSE import PlayerSound as PS
+from .GameModules.LoadMap import Map
+from .GameModules.Charactor import Player
+from .GameModules.MsgBox import MsgBox
+from .GameModules.battleWindow import *
+from .GameModules.LocalFunc import *
+from .GameModules.EventSE import EventSound as ES
+from .GameModules.EventSE import PlayerSound as PS
 
 GS = 32
 DOWN, LEFT, RIGHT, UP = 0,1,2,3

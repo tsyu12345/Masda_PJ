@@ -1,18 +1,18 @@
 """dependency library import"""
 import pygame
 from pygame.locals import *
-from playsound import playsound
-from  multiprocessing import Pool
+from pygame import mixer
 import sys
 #import csv
 
 """import game module"""
 #from GameModules.LoadMap import Map
-from GameModules.LocalFunc import *
+from Modules.GameModules.LocalFunc import *
 """import game file"""
-from GameFiles import game_tyutorial
-from GameFiles import tutorial
-from GameFiles import Syokyu
+from Modules import game_tyutorial
+from Modules import tutorial
+from Modules import Syokyu
+
 class TitleText:
     def __init__(self, text, col_tuple):
         font = pygame.font.Font(
@@ -52,10 +52,10 @@ def main():
     auth_caption = pygame.Rect(0, 600, width, height-600)
     caption = auth_font.render("Copyright 2021-06-23 チームたんじろう all rights reserved", True, (0,0,0))
     #BGM
-    pygame.mixer.init()
+    mixer.init()
     #pygame.mixer.init(22050,-16,2,2048)
-    pygame.mixer.music.load('sounds/OpeningThema/8bit29.mp3')
-    pygame.mixer.music.play(-1)
+    mixer.music.load('sounds/OpeningThema/8bit29.mp3')
+    mixer.music.play(-1)
     #p = Pool(1)
     #p.apply_async(playsound, args=(['sounds/OpeningThema/8bit29.mp3']))
     yes_se = pygame.mixer.Sound('sounds/clickSound/systen40.wav')
@@ -160,6 +160,7 @@ def main():
                         #ここにその後の処理を追加
                         yes_se.play()
                         #p.terminate()
+                        mixer.music.stop()
                         print("チュートリアル button pressed!!")
                         tutorial.main()
                         pygame.init()
@@ -171,10 +172,11 @@ def main():
                         #ここにその後の処理を追加
                         yes_se.play()
                         #p.terminate()
+                        mixer.music.stop()
                         print("初級コース button pressed!!")
                         Syokyu.main()
                         pygame.init()
-                        
+                        mixer.music.play()
                     if c3_btn.collidepoint(event.pos):
                         #ここにその後の処理を追加
                         yes_se.play()

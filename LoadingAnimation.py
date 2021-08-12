@@ -4,14 +4,14 @@ from pygame import mixer
 
 class TextAnimation():
     def __init__(self, text, screen):
-        w, h = screen.get_size()
+        self.w, self.h = screen.get_size()
         self.text = text
-        self.posX = w
-        self.posY = h / 2
+        self.posX = self.w
+        self.posY = self.h / 2
         self.end_flg = False
     
     def display(self,screen:pygame.Surface):
-        pygame.draw.rect(screen, (0, 0, 0), Rect(0, 0, width, height))
+        pygame.draw.rect(screen, (0, 0, 0), Rect(0, 0, self.w, self.h))
         font = pygame.font.Font('font_data/PixelMplus-20130602/PixelMplus12-Regular.ttf', 50)
         font.set_bold(True)
         render = font.render(self.text, True, (255,255,255))

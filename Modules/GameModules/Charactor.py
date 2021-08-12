@@ -72,7 +72,7 @@ class Player(Character):
             
         screen.blit(img, (self.posX-offX, self.posY-offY))
         pygame.display.update()
-        print("x, y:" + str(self.posX) +", " +str(self.posY))
+        #print("x, y:" + str(self.posX) +", " +str(self.posY))
         #print("offXY:" + str(offX) + "," +str(offY))
         if self.frame > 100:
             self.frame = 0

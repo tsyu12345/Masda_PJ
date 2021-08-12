@@ -62,7 +62,7 @@ def main():
     yes_se = pygame.mixer.Sound('sounds/OtherSounds/key_yes.wav')
     no_se = pygame.mixer.Sound('sounds/OtherSounds/key_no.wav')
     se1 = pygame.mixer.Sound('sounds/OtherSounds/serif.wav')
-    se2 = pygame.mixer.Sound('sounds/OtherSounds/www.wav')
+    #se2 = pygame.mixer.Sound('sounds/OtherSounds/www.wav')
     se3 = pygame.mixer.Sound('sounds/OtherSounds/Question.wav')
     se4 = pygame.mixer.Sound('sounds/OtherSounds/key_Enter.wav')
     se_flg = False
@@ -160,7 +160,7 @@ def main():
             pygame.draw.rect(screen, (0, 0, 0), sub_msg_box)
             end_render = font.render(
                 "はい！ひっかかった～～～乙～～。＿", True, (255, 255, 255))
-            se2.play()
+            #se2.play()
             screen.blit(
                 end_render, (sub_msg_box_point[0]+5, sub_msg_box_point[1]+15))
 

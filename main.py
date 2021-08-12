@@ -10,6 +10,7 @@ import sys
 from Modules.GameModules.LocalFunc import *
 from Modules.GameModules.Menu import MainMenu
 from Modules.GameModules.EventSE import EventSound
+from LoadingAnimation import TextAnimation
 """import game file"""
 from Modules import game_tyutorial
 from Modules import tutorial
@@ -113,6 +114,7 @@ def main():
     corse_select = False
     top_page = True
     #OP_BGM.start()
+    loading = TextAnimation("よみこみちゅう..." ,screen)
     while top_page:#全体のループ
 
         while title_page:
@@ -143,8 +145,13 @@ def main():
                     if event.key == K_ESCAPE:   # Escキーが押されたとき
                         pygame.quit()
                         sys.exit()
-                
-        
+        """
+        while loading.end_flg == False:
+            loading.display(screen)
+            pygame.display.update()
+            for event in pygame.event.get():
+                exit_game(event)        
+        """
         #ワールドマップ画面
         #必要なオブジェクトを定義
         map = load_image('Map_data/worldMapData.png')
@@ -198,6 +205,11 @@ def main():
                     #p.terminate()
                     mixer.music.stop()
                     print("チュートリアル button pressed!!")
+                    while loading.end_flg == False:
+                        loading.display(screen)
+                        pygame.display.update()
+                        for event in pygame.event.get():
+                            exit_game(event)     
                     tutorial.main()
                     pygame.init()
                     game_tyutorial.main()
@@ -208,6 +220,11 @@ def main():
                     #p.terminate()
                     mixer.music.stop()
                     print("初級コース button pressed!!")
+                    while loading.end_flg == False:
+                        loading.display(screen)
+                        pygame.display.update()
+                        for event in pygame.event.get():
+                            exit_game(event)
                     Syokyu.main()
                     #pygame.init()
                     mixer.music.load('sounds/OpeningThema/8bit29.mp3')

@@ -146,42 +146,57 @@ def main():
         #pygame.draw.rect(screen, (0, 0, 0), Rect(0, 0, width, height))
         map.draw_map(screen, player.posX, player.posY)
         player.display(screen)
+        while announce_box.end_flg == False:
+            announce_box.display(screen)
+            pygame.display.update()
+            for event in pygame.event.get():
+                announce_box.text_update(event)
+                exit_game(event)
 
         if player.posX==464 and player.posY ==608:
-            if mob2.end_flg == False:
+            while mob2.end_flg == False:
                 mob2.display(screen)
-            #else:
-                #mob2.end_flg = False
+                pygame.display.update()
+                for event in pygame.event.get():
+                    mob2.text_update(event)
+                    exit_game(event)
+            
         if player.posX == 176 and player.posY ==608:
-            if mob3.end_flg == False:
+            while mob3.end_flg == False:
                 mob3.display(screen)
-            else:
-                if announce_box2.end_flg == False:
-                    announce_box2.display(screen)
+                pygame.display.update()
+                for event in pygame.event.get():
+                    mob3.text_update(event)
+                    exit_game(event)
+            while announce_box2.end_flg == False:
+                announce_box2.display(screen)
+                pygame.display.update()
+                for event in pygame.event.get():
+                    announce_box2.text_update(event)
+                    exit_game(event)
             #else:
                 #mob3.end_flg = False    
         if player.posX == 368 and player.posY ==448:
-            if mob1.end_flg == False:
+            while mob1.end_flg == False:
                 mob1.display(screen)
+                pygame.display.update()
+                for event in pygame.event.get():
+                    mob1.text_update(event)
+                    exit_game(event)
             #else:
                 #mob1.end_flg = False
-        if announce_box.end_flg == False:
-            announce_box.display(screen)
-        
         if player.posX ==816 and player.posY ==192:
             battle = True
             main_flg = False
             #p.terminate()
             mixer.music.stop()
             break
-           
         pygame.display.update()
         for event in pygame.event.get():
-            announce_box.text_update(event)
-            announce_box2.text_update(event)
-            mob1.text_update(event)
-            mob2.text_update(event)
-            mob3.text_update(event)
+            #announce_box2.text_update(event)
+            #mob1.text_update(event)
+            #mob2.text_update(event)
+            #mob3.text_update(event)
             player.move(event)
             exit_game(event)
 

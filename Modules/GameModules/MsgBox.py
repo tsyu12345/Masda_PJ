@@ -14,7 +14,11 @@ class MsgBox():
         self.posx = 70
         self.posy = 410
         self.end_flg = False
+        
         self.label:list = []
+        self.label.append(self.font.render(self.msg_list[self.msg_index], True, (255, 255, 255)))
+        self.label.append(self.font.render(self.msg_list[self.msg_index+1], True, (255, 255, 255)))
+        self.label.append(self.font.render(self.msg_list[self.msg_index+2], True, (255, 255, 255)))
         self.frame = 0
         self.frame_reset = False
         self.disped_list = [False, False, False]
@@ -28,15 +32,13 @@ class MsgBox():
         pygame.draw.rect(screen, (255, 255, 255), self.msg_box, 6)  # 縁
         pygame.draw.rect(screen, (0, 0, 0), self.msg_box)  # メッセージボックス
         try:
-            self.label.append(self.font.render(self.msg_list[self.msg_index], True, (255, 255, 255)))
-            self.label.append(self.font.render(self.msg_list[self.msg_index+1], True, (255, 255, 255)))
-            self.label.append(self.font.render(self.msg_list[self.msg_index+2], True, (255, 255, 255)))
             screen.blit(self.label[0], (self.posx, self.posy))
             screen.blit(self.label[1], (self.posx,self.posy+40))
             screen.blit(self.label[2], (self.posx,self.posy+80))
         except IndexError:
             self.end_flg = True
         pygame.display.update()
+        
 
     """   
     def name_tag(self, screen:pygame.Surface,name:str):
@@ -55,15 +57,13 @@ class MsgBox():
         if event.type == KEYDOWN:
             if event.key == K_RETURN:
                 self.eventSE.key_Enter.play()
-                try: 
+                try:
+                    self.label = []
                     self.msg_index += 3 
                     self.frame = 0       
-                    self.label[0] = self.font.render(
-                        self.msg_list[self.msg_index], True, (255, 255, 255))
-                    self.label[1] = self.font.render(
-                        self.msg_list[self.msg_index+1], True, (255, 255, 255))
-                    self.label[2] = self.font.render(
-                        self.msg_list[self.msg_index+2], True, (255, 255, 255))
+                    self.label.append(self.font.render(self.msg_list[self.msg_index], True, (255, 255, 255)))
+                    self.label.append(self.font.render(self.msg_list[self.msg_index+1], True, (255, 255, 255)))
+                    self.label.append(self.font.render(self.msg_list[self.msg_index+2], True, (255, 255, 255)))
 
                 except IndexError:
                     self.end_flg = True

@@ -128,7 +128,7 @@ def main():
     #p.apply_async(playsound, args=(['sounds/OpeningThema/8bit22.mp3']))
     mixer.init()
     mixer.music.load('sounds/OpeningThema/8bit22.mp3')
-    mixer.play(-1)
+    mixer.music.play(-1)
     while main_flg:
         
         while end_tyutorial:

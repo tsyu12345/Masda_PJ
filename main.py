@@ -30,38 +30,47 @@ class Button:
         return button 
 
 class SelectCorseCarsol:
-    def __init__(self):
-        self.carsol = [[10, 500],[30, 550],[10, 600],]
+    def __init__(self, menu_cnt):
         self.carsol_cnt = 0
+        self.max_menu_cnt = menu_cnt
+        self.sound = EventSound()
         self.pos_list = [
-            [[10, 500],[30, 550],[10, 600]],#チュートリアル
-            [[],[],[]],#初級
-            [[],[],[]],#中級
-            [[],[],[]],#上級
-            [[],[],[]],#もどる
+            [[10, 500],[30, 520],[10, 540]],#チュートリアル
+            [[50, 430],[70, 450],[50, 470]],#初級
+            [[175, 330],[195, 350],[175, 370]],#中級
+            [[460, 110],[490, 130],[460, 150]],#上級
+            [[570, 500],[590, 520],[570, 540]],#もどる
             ]
+        self.carsol = self.pos_list[0]
 
     def display(self, screen):
-        pygame.draw.polygon(screen, (255, 255, 255), self.carsol)
-    
+        pygame.draw.polygon(screen, (5, 255, 5), self.carsol)
+        pygame.display.flip()
+
     def carsol_controle(self, event):
+        print(self.carsol_cnt)
         if event.type == KEYDOWN:
             if event.key == K_RETURN:
-                pass
+                return self.carsol_cnt
                 #self.sound.key_Enter.play()
 
-            if self.carsol_cnt < 5:
+            if self.carsol_cnt < self.max_menu_cnt:
                 if event.key == K_RIGHT:
                     self.carsol_cnt += 1
                     self.sound.menu_carsol_move.play()
-                    if self.carsol_cnt == 1:
-                        self.carsol = [[10, 500],[30, 550],[10, 600],]
+                    for i,pos in enumerate(self.pos_list):
+                        if self.carsol_cnt == i:
+                            self.carsol = pos
+                            break 
 
             if self.carsol_cnt != 0:
                 if event.key == K_LEFT:
                     self.carsol_cnt -= 1
                     self.sound.menu_carsol_move.play()
-                    
+                    for i,pos in enumerate(self.pos_list):
+                        if self.carsol_cnt == i:
+                            self.carsol = pos
+                            break
 def main():
     pygame.init()
     font = pygame.font.Font('font_data/PixelMplus-20130602/PixelMplus12-Regular.ttf', 20)
@@ -139,6 +148,7 @@ def main():
         #必要なオブジェクトを定義
         map = load_image('Map_data/worldMapData.png')
         button = Button()
+        select_carsol = SelectCorseCarsol(5)
         course1_btn_point = (40, 500, 200, 50)
         course2_btn_point = (80, 420, 200, 50)
         course3_btn_point = (200, 330, 200, 50)
@@ -174,17 +184,44 @@ def main():
             screen.blit(c3_text, (course3_btn_point[0] + 50 , course3_btn_point[1] + 15))
             screen.blit(c4_text, (course4_btn_point[0] + 50 , course4_btn_point[1] + 15))
             screen.blit(rn_text, (return_btn_point[0] + 20, return_btn_point[1] + 15))
-            
+            select_carsol.display(screen)
             pygame.display.update()
 
             for event in pygame.event.get():
-                if event.type == QUIT:          # 閉じるボタンが押されたとき
-                    pygame.quit()
-                    sys.exit()
-                if event.type == KEYDOWN:       # キーを押したとき
-                    if event.key == K_ESCAPE:   # Escキーが押されたとき
-                        pygame.quit()
-                        sys.exit()
+                exit_game(event)
+                cours = select_carsol.carsol_controle(event)
+                if cours ==0:#チュートリアル
+                    yes_se.play()
+                    #p.terminate()
+                    mixer.music.stop()
+                    print("チュートリアル button pressed!!")
+                    tutorial.main()
+                    pygame.init()
+                    game_tyutorial.main()
+                    print("END")
+                    pygame.init()
+                if cours == 1:#初級
+                    yes_se.play()
+                    #p.terminate()
+                    mixer.music.stop()
+                    print("初級コース button pressed!!")
+                    Syokyu.main()
+                    #pygame.init()
+                    mixer.music.load('sounds/OpeningThema/8bit29.mp3')
+                    mixer.music.play(-1)
+                if cours == 2:#中級
+                    yes_se.play()
+                    print("中級コース button pressed!!")
+                if cours == 3:#上級
+                    yes_se.play()
+                    print("上級コース button pressed!!")
+                if cours == 4:#もどる
+                    no_se.play()
+                    title_page = True
+                    corse_select = False
+
+                
+"""
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if c1_btn.collidepoint(event.pos):
                         #ここにその後の処理を追加
@@ -223,7 +260,7 @@ def main():
                         no_se.play()
                         title_page = True
                         corse_select = False
-                        
+"""              
    
 if __name__ == "__main__":
     main()

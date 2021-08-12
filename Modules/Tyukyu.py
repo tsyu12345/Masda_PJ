@@ -83,11 +83,11 @@ def main():
 
     while first_story_flg:
         story_box.display(screen, story_box_point)
+        pygame.display.update()
         if story_box.msg_index >= 6:
             screen.blit(hotoke, (story_box_point[0]+40, story_box_point[1]-60))
         if story_box.end_flg:
             break
-        pygame.display.update()
         for event in pygame.event.get():
             exit_game(event)#終了用イベント処理
             story_box.text_update(event)

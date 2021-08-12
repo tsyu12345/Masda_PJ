@@ -14,6 +14,7 @@ from Modules.GameModules.EventSE import EventSound
 from Modules import game_tyutorial
 from Modules import tutorial
 from Modules import Syokyu
+from Modules import Tyukyu
 
 class TitleText:
     def __init__(self, text, col_tuple):
@@ -155,8 +156,8 @@ def main():
         course4_btn_point = (width - 300, 100, 200, 50)
         c1_text = font.render("チュートリアル", True, (255, 255, 255))
         c2_text = font.render("初級コース", True, (255, 255, 255))
-        c3_text = font.render("鋭意制作中", True, (100, 100, 100))
-        c4_text = font.render("近日公開", True, (100, 100, 100))
+        c3_text = font.render("制作中！！", True, (100, 100, 100))
+        c4_text = font.render("近日公開！！", True, (100, 100, 100))
         c1_btn = button.btn_init(course1_btn_point)
         c2_btn = button.btn_init(course2_btn_point)
         c3_btn = button.btn_init(course3_btn_point)
@@ -189,7 +190,9 @@ def main():
 
             for event in pygame.event.get():
                 exit_game(event)
-                cours = select_carsol.carsol_controle(event)
+                cours = select_carsol.carsol_controle(event) #EnterKeyでいまセレクトしているボタンのindexを返す。
+
+                
                 if cours ==0:#チュートリアル
                     yes_se.play()
                     #p.terminate()
@@ -210,8 +213,12 @@ def main():
                     mixer.music.load('sounds/OpeningThema/8bit29.mp3')
                     mixer.music.play(-1)
                 if cours == 2:#中級
-                    yes_se.play()
                     print("中級コース button pressed!!")
+                    yes_se.play()
+                    mixer.music.stop()
+                    Tyukyu.main()
+                    mixer.music.load('sounds/OpeningThema/8bit29.mp3')
+                    mixer.music.play(-1)
                 if cours == 3:#上級
                     yes_se.play()
                     print("上級コース button pressed!!")

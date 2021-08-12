@@ -67,11 +67,28 @@ def main():
         "",#
     ]
     story_box = MsgBox(story1)
+    story_box_point = (50, 400, 700, 150)
+    hotoke = load_image('images/Characters/other/0205000021.png')
+    #マップ
+    map = Map('Map_data/TyukyuMapData.tmx')
+    #プレイヤー
+    player = Player('images/Characters/hero/pipo-charachip027c.png', 10, 1, screen)
+    player.posX, player.posY = 400, 320 #初期位置
     #状態フラグ変数
     first_story_flg = True
     bouken_flg = False
     battle_flg = False
     
     #以下メインループ
+
     while first_story_flg:
-        
+        story_box.display(screen, story_box_point)
+        if story_box.msg_index >= 6:
+            screen.blit(hotoke, (story_box_point[0]+40, story_box_point[1]-60))
+        if story_box.end_flg:
+            break
+        pygame.display.update()
+        for event in pygame.event.get():
+            exit_game(event)#終了用イベント処理
+            story_box.text_update(event)
+

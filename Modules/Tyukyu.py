@@ -100,16 +100,72 @@ def main():
     for mob in mob_imgs_list:
         add = Character(mob,screen)
         mobs.append(add)
+    mixer.init()
+    mixer.music.load('sounds/OpeningThema/NeoRock47.mp3')
+    mixer.music.set_volume(0.3)
+    mixer.music.play(-1)
+    
+    #ランダム座標戦闘用の問題
+    random_question1 = {
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+    }
+    random_question2 = {
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+    }
+    random_question3 = {
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+    }
+    random_question4 = {
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+    }
     
     while bouken_flg:
         map.draw_map(screen, player.posX, player.posY)
         player.display(screen)
+        pygame.display.update()
         for mob in mobs:
             mob.display()
-        pygame.display.update()
         for event in pygame.event.get():
             player.move(event)
             exit_game(event)#終了用イベント処理
+
+
 
     question = {
         #Question here    

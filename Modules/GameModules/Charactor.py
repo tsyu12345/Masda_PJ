@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+import random
 #from LoadMap import Map
 #from battleWindow import *
 from .LocalFunc import *
@@ -15,20 +16,30 @@ DOWN, LEFT, RIGHT, UP = 0, 1, 2, 3
 class Character:
 
     def __init__(self, img_filename, screen:pygame.Surface):
+        w, h = screen.get_size()
         self.imgs = split_image_load(load_image(img_filename))
-        self.posX = 0
-        self.posY = 0
+        self.posX = random.randint(0, 600)
+        self.posY = random.randint(0, 600)
+        self.startposX = self.posX
+        self.startposY = self.posY
         self.animcycle = 24
         self.frame = 0
         self.clock = pygame.time.Clock()
         self.screen = screen
         self.direction = DOWN
 
+    def calc_offset(self):
+        #w, h = self.screen.get_size()
+        self.offX = self.posX -  self.startposX
+        self.offY = self.posY - self.startposY
+        return self.offX, self.offY
+
     def display(self):
         self.clock.tick(60)
+        offX, offY = self.calc_offset()
         self.frame += 1
         img = self.imgs[int(self.direction*4 + self.frame/self.animcycle%3)]
-        self.screen.blit(img, (self.posX, self.posY))
+        self.screen.blit(img, (self.posX-offX, self.posY-offY))
         pygame.display.update()
         if self.frame > 1000:
             self.frame = 0
@@ -39,21 +50,6 @@ class Character:
         """
         self.posX += move_range[0][0]
         self.posY += move_range[0][1]
-
-
-
-class MobCharactor():
-    def __init__(self, img, screen, pos_loist):
-        self.screen = screen
-        self.imgs = split_image_load(load_image(img))
-        self.poslist = pos_loist
-        self.frame = 0
-        self.animcycle
-
-    def displpay(self):
-        for pos in self.poslist:
-            imgs = self.imgs[int(0*4 + self.frame/self.animcycle%3)]
-            self.screen.blit(imgs, ())
 
 class Player(Character):
     def __init__(self, img_filename, HP, Level, screen:pygame.Surface):

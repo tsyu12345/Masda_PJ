@@ -204,6 +204,7 @@ def main():
                     yes_se.play()
                     #p.terminate()
                     mixer.music.stop()
+                    eventSE.select_course.play()
                     print("チュートリアル button pressed!!")
                     while loading.end_flg == False:
                         loading.display(screen)
@@ -219,6 +220,7 @@ def main():
                     yes_se.play()
                     #p.terminate()
                     mixer.music.stop()
+                    eventSE.select_course.play()
                     print("初級コース button pressed!!")
                     while loading.end_flg == False:
                         loading.display(screen)
@@ -233,6 +235,7 @@ def main():
                     print("中級コース button pressed!!")
                     yes_se.play()
                     mixer.music.stop()
+                    eventSE.select_course.play()
                     Tyukyu.main()
                     mixer.music.load('sounds/OpeningThema/8bit29.mp3')
                     mixer.music.play(-1)

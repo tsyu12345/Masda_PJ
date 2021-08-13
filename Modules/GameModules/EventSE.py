@@ -11,6 +11,7 @@ class EventSound:
         self.btn_select = pygame.mixer.Sound('sounds/OtherSounds/button_select.wav')
         self.text_update = pygame.mixer.Sound('sounds/OtherSounds/serif.wav')
         self.menu_carsol_move = pygame.mixer.Sound('sounds/OtherSounds/NES-RPG02-06(Select).wav')
+        self.select_course = pygame.mixer.Sound('sounds/OtherSounds/start.wav')
     
     def event_catch_se(self, event:pygame.event, btn=None):
         """Use in event for loop of pygame.event.get(). """

@@ -1,6 +1,13 @@
 import pygame
 from pygame.locals import * 
 from .EventSE import EventSound
+
+
+class MenuDetectIcon():
+    def __init__(self, point:tuple):
+        self.point = (point[0], point[1], point[2], point[3])#x,y,w,h
+        
+
 class MainMenu():
     def __init__(self, menu_list:list, color:tuple, size:tuple, font_size:int):
         self.menu_list = menu_list

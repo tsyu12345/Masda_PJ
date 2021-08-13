@@ -7,6 +7,7 @@ from .GameModules.MsgBox import MsgBox, OneLineMsgBox
 from .GameModules.battleWindow import *
 from .GameModules.LocalFunc import *
 from .GameModules.Charactor import Player
+from .GameModules.Charactor import Character 
 from .GameModules.EventSE import EventSound as ES
 from .GameModules.EventSE import PlayerSound as PS
 
@@ -93,10 +94,24 @@ def main():
     map = Map('Map_data/TyukyuMapData.tmx')
     player = Player('images/Characters/hero/pipo-charachip027c.png', 10, 1, screen)
     player.posX, player.posY = 35, 275
+
+    mob_imgs_list = ["images/Characters/キャラチップ/pipo-charachip028c.png",]
+    mobs = []
+    for mob in mob_imgs_list:
+        add = Character(mob,screen)
+        mobs.append(add)
+    
     while bouken_flg:
         map.draw_map(screen, player.posX, player.posY)
         player.display(screen)
+        for mob in mobs:
+            mob.display()
         pygame.display.update()
         for event in pygame.event.get():
             player.move(event)
             exit_game(event)#終了用イベント処理
+
+    question = {
+        #Question here    
+    }
+    

@@ -16,9 +16,12 @@ class MsgBox():
         self.end_flg = False
         
         self.label:list = []
-        self.label.append(self.font.render(self.msg_list[self.msg_index], True, (255, 255, 255)))
-        self.label.append(self.font.render(self.msg_list[self.msg_index+1], True, (255, 255, 255)))
-        self.label.append(self.font.render(self.msg_list[self.msg_index+2], True, (255, 255, 255)))
+        try:
+            self.label.append(self.font.render(self.msg_list[self.msg_index], True, (255, 255, 255)))
+            self.label.append(self.font.render(self.msg_list[self.msg_index+1], True, (255, 255, 255)))
+            self.label.append(self.font.render(self.msg_list[self.msg_index+2], True, (255, 255, 255)))
+        except IndexError:
+            pass
         self.frame = 0
         self.frame_reset = False
         self.disped_list = [False, False, False]

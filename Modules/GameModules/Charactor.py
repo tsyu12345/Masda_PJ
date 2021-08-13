@@ -14,9 +14,7 @@ DOWN, LEFT, RIGHT, UP = 0, 1, 2, 3
 
 class Character:
 
-    def __init__(self, img_filename, HP, Level, screen:pygame.Surface):
-        self.HP = HP
-        self.Level = Level
+    def __init__(self, img_filename, screen:pygame.Surface):
         self.imgs = split_image_load(load_image(img_filename))
         self.posX = 0
         self.posY = 0
@@ -24,31 +22,46 @@ class Character:
         self.frame = 0
         self.clock = pygame.time.Clock()
         self.screen = screen
+        self.direction = DOWN
 
-    def display(self, screen):
+    def display(self):
         self.clock.tick(60)
         self.frame += 1
-        img = self.imgs[int(0*4 + self.frame/self.animcycle%3)]
-        screen.blit(img, (self.posX, self.posY))
+        img = self.imgs[int(self.direction*4 + self.frame/self.animcycle%3)]
+        self.screen.blit(img, (self.posX, self.posY))
         pygame.display.update()
+        if self.frame > 1000:
+            self.frame = 0
+
+    def move(self, move_range:tuple):
+        """
+        現在調整中、、。
+        """
+        self.posX += move_range[0][0]
+        self.posY += move_range[0][1]
+
+
 
 class MobCharactor():
     def __init__(self, img, screen, pos_loist):
         self.screen = screen
         self.imgs = split_image_load(load_image(img))
         self.poslist = pos_loist
+        self.frame = 0
+        self.animcycle
 
     def displpay(self):
         for pos in self.poslist:
-            imgs = self.imgs[int(0*4 + frame/animcycle%3)]
-            screen.blit(img, ())
+            imgs = self.imgs[int(0*4 + self.frame/self.animcycle%3)]
+            self.screen.blit(imgs, ())
 
 class Player(Character):
     def __init__(self, img_filename, HP, Level, screen:pygame.Surface):
-        super().__init__(img_filename, HP, Level,screen)
+        super().__init__(img_filename,screen)
         self.playsound = PS()
         self.direction = DOWN
-
+        self.HP = HP
+        self.level = Level
     def calc_offset(self,screen):
         w, h = screen.get_size()
         self.offX = self.posX - w/2 
@@ -74,7 +87,7 @@ class Player(Character):
         pygame.display.update()
         #print("x, y:" + str(self.posX) +", " +str(self.posY))
         #print("offXY:" + str(offX) + "," +str(offY))
-        if self.frame > 100:
+        if self.frame > 1000:
             self.frame = 0
         #print((self.posX-offX, self.posY-offY))
 

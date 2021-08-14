@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 import random
-#from LoadMap import Map
+from .LoadMap import Map
 #from battleWindow import *
 from .LocalFunc import *
 #from EventSE import EventSound as ES
@@ -52,12 +52,13 @@ class Character:
         self.posY += move_range[0][1]
 
 class Player(Character):
-    def __init__(self, img_filename, HP, Level, screen:pygame.Surface):
+    def __init__(self, img_filename, HP, Level, screen:pygame.Surface, map_obj:Map):
         super().__init__(img_filename,screen)
         self.playsound = PS()
         self.direction = DOWN
         self.HP = HP
         self.level = Level
+        self.map = map_obj
     def calc_offset(self,screen):
         w, h = screen.get_size()
         self.offX = self.posX - w/2 
@@ -87,23 +88,25 @@ class Player(Character):
             self.frame = 0
         #print((self.posX-offX, self.posY-offY))
 
-    def move(self, event):
-        if event.type == KEYDOWN:
-            if event.key == K_DOWN and self.posY < M_ROW * GS:
+    def move(self):
+        pressed_key = pygame.key.get_pressed()
+        movable = self.map.isMove(self.posX, self.posY)
+        if movable:
+            if pressed_key[K_DOWN] and self.posY < M_ROW * GS:
                 self.playsound.walk.play()
                 self.direction = DOWN
-                self.posY += GS
-            if event.key == K_LEFT and self.posX > GS:
+                self.posY += GS /4
+            if pressed_key[K_LEFT] and self.posX > GS:
                 self.playsound.walk.play()
                 self.direction = LEFT
-                self.posX -= GS
-            if event.key == K_RIGHT and self.posX < M_COL * GS:
+                self.posX -= GS/4
+            if pressed_key[K_RIGHT] and self.posX < M_COL * GS:
                 self.playsound.walk.play()
                 self.direction = RIGHT
-                self.posX += GS
-            if event.key == K_UP and self.posY > GS:
+                self.posX += GS/4
+            if pressed_key[K_UP] and self.posY > GS:
                 self.playsound.walk.play()
                 self.direction = UP
-                self.posY -= GS       
+                self.posY -= GS/4      
 
     

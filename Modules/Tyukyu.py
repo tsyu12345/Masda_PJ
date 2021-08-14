@@ -90,9 +90,9 @@ def main():
             exit_game(event)#終了用イベント処理
             story_box.text_update(event)
 
-
-    map = Map('Map_data/TyukyuMapData.tmx')
-    player = Player('images/Characters/hero/pipo-charachip027c.png', 10, 1, screen)
+    map_data = 'Map_data/TyukyuMapData.tmx'
+    map = Map(map_data)
+    player = Player('images/Characters/hero/pipo-charachip027c.png', 10, 1, screen, map)
     player.posX, player.posY = 35, 275
 
     mob_imgs_list = ["images/Characters/キャラチップ/pipo-charachip028c.png",]
@@ -159,10 +159,10 @@ def main():
         map.draw_map(screen, player.posX, player.posY)
         player.display(screen)
         pygame.display.update()
+        player.move()
         for mob in mobs:
             mob.display()
         for event in pygame.event.get():
-            player.move(event)
             exit_game(event)#終了用イベント処理
 
 

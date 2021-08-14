@@ -11,7 +11,6 @@ class Map: #Tiledからの読み込みと描画担当
         self.gid = 0
 
     def calc_offset(self, screen:pygame.Surface ,px, py):
-       
        # print("px")
         #print(px)
         w, h = screen.get_size()    
@@ -89,17 +88,18 @@ class Map: #Tiledからの読み込みと描画担当
                     except ValueError:
                         pass
         """
-                        
-    
-    def is_movable(self, x, y): #マップの移動可否判定:現在調整中。。。
-        """(x,y)は移動可能か？"""
-        # マップ範囲内か？
-        if x < 0 or x > self.col-1 or y < 0 or y > self.row-1:
+    def isMove(self, px, py):
+        try:
+            tile = self.gameMap.get_tile_image(int(px/GS), int(py/GS), 1)
+        except ValueError:
+            tile = 0 #オブジェクトがない場合、プレイヤーは動ける。0。
+        #print(gid)
+        print(tile)
+        if tile != None:#オブジェクトがある場合は0以外のgidを持っているので、False動けない
             return False
-        # マップチップは移動可能か？
-        if self.map[y][x] == 1:  # 水は移動できない
-            return False
-        return True
+        else:
+            return True
+        
 
 
 

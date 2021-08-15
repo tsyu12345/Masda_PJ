@@ -86,9 +86,10 @@ def main():
     msg_box_point = (50, 400, 700, 150)
     hotoke = load_image('images/Characters/other/0205000021.png')
     #Map
-    map = Map('Map_data/SyokyuMapData.tmx')
+    map_data = 'Map_data/SyokyuMapData.tmx'
+    map = Map(map_data)
     #Player
-    player = Player('images/Characters/hero/pipo-charachip027c.png', 10, 1, screen)
+    player = Player('images/Characters/hero/pipo-charachip027c.png', 10, 1, screen, map_data)
     player.posX, player.posY = 400, 320
     """
     heishi_pos = [[], [], [], []]
@@ -192,12 +193,12 @@ def main():
             mixer.music.stop()
             break
         pygame.display.update()
+        player.move()
         for event in pygame.event.get():
             #announce_box2.text_update(event)
             #mob1.text_update(event)
             #mob2.text_update(event)
             #mob3.text_update(event)
-            player.move(event)
             exit_game(event)
 
     pygame.init()
@@ -354,14 +355,11 @@ def main():
         "...",
         "",
         "",#
-        "メタい話、忙しくてまだ開発途中なんじゃ...",
-        "完成したら教えるから、",
-        "すこし宿屋でまっててくれたまえ。",#
-        "...",
-        "いや、まじごめんて。",
+        "次は冒険者中級、",
+        "アルヌスという街へ行ってもらおうか。",
         "",#
-        "そんな、怒らないでよ！",
-        "",
+        "次の街では勇者の戦闘力が試されるぞ",
+        "決して油断するでないぞ...。",
         "",#
         ]
     frame = 0

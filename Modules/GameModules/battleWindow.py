@@ -133,7 +133,7 @@ class TypeingGame:
         pygame.draw.rect(screen, (50, 100, 50), pygame.Rect(100, 20, w-200, h-300), 1)
         pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(150, 50, 500, 200), 4)
         font = pygame.font.Font(
-        'font_data/PixelMplus-20130602/PixelMplus12-Regular.ttf', 100)
+        'font_data/PixelMplus-20130602/PixelMplus12-Regular.ttf', 60)
         font.set_bold(True)
         #question = self.return_question(self.index)
         q_text = font.render(self.question, True, (255, 255, 255))
@@ -141,7 +141,7 @@ class TypeingGame:
         screen.blit(q_text, q_text_rect)
         #self.answer = self.return_ans(self.index)
         font = pygame.font.Font(
-        'font_data/PixelMplus-20130602/PixelMplus12-Regular.ttf', 50)
+        'font_data/PixelMplus-20130602/PixelMplus12-Regular.ttf', 40)
         ans_text = font.render(self.answer, True, (255, 255, 255))
         ans_text_rect = ans_text.get_rect(center=(w/2 , h/2-120))
         ansed_text = font.render(self.answer[0:len(self.inputKey_list)], True, (255, 5, 5))

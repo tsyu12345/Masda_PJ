@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="50" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="1">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="50" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="6">
  <tileset firstgid="1" source="SyokyuTileData/pipo-map001.tsx"/>
  <tileset firstgid="89" source="SyokyuTileData/590d7a54.tsx"/>
  <tileset firstgid="281" source="SyokyuTileData/pipo-map001_at-umi.tsx"/>
@@ -98,4 +98,8 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="4" name="オブジェクトレイヤー1">
+  <object id="1" gid="12" x="862.239" y="118.89" width="32" height="32"/>
+  <object id="2" gid="12" x="875.1" y="129.914" width="32" height="32"/>
+ </objectgroup>
 </map>

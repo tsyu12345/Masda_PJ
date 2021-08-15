@@ -28,18 +28,18 @@ class Character:
         self.screen = screen
         self.direction = DOWN
 
-    def calc_offset(self):
+    def calc_offset(self, p_mx, p_my):
         #w, h = self.screen.get_size()
-        self.offX = self.posX -  self.startposX
+        self.offX = self.posX -  pmx
         self.offY = self.posY - self.startposY
         return self.offX, self.offY
 
     def display(self):
         self.clock.tick(60)
-        offX, offY = self.calc_offset()
+        #offX, offY = self.calc_offset()
         self.frame += 1
         img = self.imgs[int(self.direction*4 + self.frame/self.animcycle%3)]
-        self.screen.blit(img, (self.posX-offX, self.posY-offY))
+        #self.screen.blit(img, (self.posX-offX, self.posY-offY))
         pygame.display.update()
         if self.frame > 1000:
             self.frame = 0
@@ -82,7 +82,7 @@ class Player(Character):
             
         screen.blit(img, (self.posX-offX, self.posY-offY))
         pygame.display.update()
-        #print("x, y:" + str(self.posX) +", " +str(self.posY))
+        print("x, y:" + str(self.posX) +", " +str(self.posY))
         #print("offXY:" + str(offX) + "," +str(offY))
         if self.frame > 1000:
             self.frame = 0
@@ -90,7 +90,8 @@ class Player(Character):
 
     def move(self):
         pressed_key = pygame.key.get_pressed()
-        movable = self.map.isMove(self.posX, self.posY)
+        movable = True#self.map.isMove(self.posX, self.posY)
+        print(str(int(self.posX/GS)),","+ str(int(self.posY/GS)))
         if movable:
             if pressed_key[K_DOWN] and self.posY < M_ROW * GS:
                 self.playsound.walk.play()

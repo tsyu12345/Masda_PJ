@@ -165,7 +165,7 @@ def main():
         c1_text = font.render("チュートリアル", True, (255, 255, 255))
         c2_text = font.render("初級コース", True, (255, 255, 255))
         c3_text = font.render("中級コース", True, (255, 255, 255))
-        c4_text = font.render("近日公開！！", True, (100, 100, 100))
+        c4_text = font.render("上級コース", True, (255, 255, 255))
         c1_btn = button.btn_init(course1_btn_point)
         c2_btn = button.btn_init(course2_btn_point)
         c3_btn = button.btn_init(course3_btn_point)

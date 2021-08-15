@@ -20,7 +20,7 @@ def Battle(monster_img, sound_path, dic, screen:pygame.Surface, player:Player):
     if monster_img != None:
         monster = Monster(monster_img, (width / 2, height/2-100),5,1)
     aitem_btn = Button("アイテム", (255, 255, 255), (0, 0, 0), (width / 4, height-100, 100, 30))
-    status_bar = DisplayParameter(10, 1)
+    status_bar = DisplayParameter(player.HP, 1)
     typing = TypeingGame(dic,4)
     gameOver = False
     mixer.music.load(sound_path)
@@ -101,6 +101,7 @@ def Battle(monster_img, sound_path, dic, screen:pygame.Surface, player:Player):
         pygame.display.update()
         if msg_box_over.end_flg:
             #p.terminate()
+            player.HP = 10
             mixer.music.stop()
             gameOver = False
             return False
@@ -147,7 +148,7 @@ def main():
     #Map
     map = Map('Map_data/ZyoukyuuMapData.tmx')
     #Player
-    player = Player('images/Characters/hero/pipo-charachip027c.png', 10, 1, screen, map)
+    player = Player('images/Characters/hero/pipo-charachip027c.png', screen, map)
     player.posX, player.posY =304, 1224
 
     while first_story_flg:

@@ -52,12 +52,12 @@ class Character:
         self.posY += move_range[0][1]
 
 class Player(Character):
-    def __init__(self, img_filename, HP, Level, screen:pygame.Surface, map_obj:Map):
+    HP = 10
+    Level = 0
+    def __init__(self, img_filename, screen:pygame.Surface, map_obj:Map):
         super().__init__(img_filename,screen)
         self.playsound = PS()
         self.direction = DOWN
-        self.HP = HP
-        self.level = Level
         self.map = map_obj
     def calc_offset(self,screen):
         w, h = screen.get_size()

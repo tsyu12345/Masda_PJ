@@ -89,7 +89,7 @@ def main():
     map_data = 'Map_data/SyokyuMapData.tmx'
     map = Map(map_data)
     #Player
-    player = Player('images/Characters/hero/pipo-charachip027c.png', 10, 1, screen, map_data)
+    player = Player('images/Characters/hero/pipo-charachip027c.png', screen, map_data)
     player.posX, player.posY = 400, 320
     """
     heishi_pos = [[], [], [], []]
@@ -205,7 +205,7 @@ def main():
     event_sound = ES()
     monster = Monster('images/Characters/enemys/pipo-enemy46set/240x240/pipo-enemy001b.png', (width / 2, height/2-100),5,1)
     aitem_btn = Button("アイテム", (255, 255, 255), (0, 0, 0), (width / 4, height-100, 100, 30))
-    status_bar = DisplayParameter(10, 1)
+    status_bar = DisplayParameter(player.HP, 1)
     dic = {
             'RPG':"rpg",
             '冒険':'bouken',
@@ -383,10 +383,10 @@ def main():
             pygame.draw.rect(screen, (frame, frame, frame), Rect(0, 0, width, height))
             screen.blit(hotoke, (msg_box_point[0]+40, msg_box_point[1]-60))
         msg_box2.display(screen, msg_box_point)
-        
         pygame.display.update()
         if msg_box2.end_flg:
             #p.terminate()
+            player.HP = 10
             mixer.music.stop()
             break
         for event in pygame.event.get():

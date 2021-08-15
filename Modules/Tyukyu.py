@@ -39,6 +39,11 @@ def Battle(monster_img, sound_path, battle_instance:TypeingGame, screen:pygame.S
             player.HP -= 1
             battle_instance.damege = False
 
+        if player.HP == 0:
+            #p.terminate()
+            gameOver = True
+            break
+
         if battle_instance.end_flg:
             mixer.music.stop()
             mixer.music.load('sounds/OpeningThema/NeoRock47.mp3')
@@ -49,6 +54,56 @@ def Battle(monster_img, sound_path, battle_instance:TypeingGame, screen:pygame.S
         for event in pygame.event.get():
             exit_game(event)
             battle_instance.input_word(event)
+    
+    story_over = [
+        "...",
+        "",
+        "",#
+        "ああ...",
+        "",
+        "",#
+        "勇者よ、、",
+        "死んでしまうとは情けない。",
+        "",#
+        "王道なら、",
+        "教会へ行き",
+        "復活できるけど、",#
+        "ここにはそんなものありませーん！",
+        "",
+        "",#
+        "負けた罰として、",
+        "おぬしのレベルを２つ下げる！！",
+        "",#
+        "魔王は今回とは桁違いの強さ、、",
+        "先行きが不安じゃのぉ、、、",
+        "",#
+        ]
+    frame = 0
+    msg_box_over = MsgBox(story_over)
+    msg_box_point = (50, 400, 700, 150)
+    hotoke = load_image('images/Characters/other/0205000021.png')
+    mixer.init()
+    mixer.music.load('sounds/OpeningThema/gameover.mp3')
+    mixer.music.play(-1)
+    while gameOver:
+        if msg_box_over.msg_index >= 6:
+            pygame.time.wait(30)
+            frame += 1
+            if frame > 255:
+                frame = 255
+            pygame.draw.rect(screen, (frame, frame, frame), Rect(0, 0, width, height))
+            screen.blit(hotoke, (msg_box_point[0]+40, msg_box_point[1]-60))
+        msg_box_over.display(screen, msg_box_point)
+        pygame.display.update()
+        if msg_box_over.end_flg:
+            #p.terminate()
+            player.HP = 10
+            mixer.music.stop()
+            gameOver = False
+            return False
+        for event in pygame.event.get():
+            msg_box_over.text_update(event)
+            exit_game(event)
 
 
 
@@ -130,7 +185,7 @@ def main():
 
     map_data = 'Map_data/TyukyuMapData.tmx'
     map = Map(map_data)
-    player = Player('images/Characters/hero/pipo-charachip027c.png', 10, 1, screen, map)
+    player = Player('images/Characters/hero/pipo-charachip027c.png',screen, map)
     player.posX, player.posY = 35, 275
 
     mob_imgs_list = ["images/Characters/キャラチップ/pipo-charachip028c.png",]
@@ -229,6 +284,9 @@ def main():
             battle = Battle(
                 'images/Characters/enemys/pipo-enemy46set/120x120/pipo-enemy005.png', 
                 'sounds/BattleSounds/RandomBattle.mp3', ranndomBattle1, screen, player)
+            if battle == False:
+                bouken_flg = False
+                break
             battle_list[0] = battle
         
         if player.posX == 667.0 and player.posY == 563.0 and battle_list[1] == False:
@@ -239,6 +297,9 @@ def main():
             battle = Battle(
                 'images/Characters/enemys/pipo-enemy46set/120x120/pipo-enemy022.png', 
                 'sounds/BattleSounds/RandomBattle2.mp3', ranndomBattle2, screen, player)
+            if battle == False:
+                bouken_flg = False
+                break
             battle_list[1] = battle
 
         if player.posX == 323.0 and player.posY == 699.0 and battle_list[2] == False:
@@ -249,6 +310,9 @@ def main():
             battle = Battle(
                 'images/Characters/enemys/pipo-enemy46set/120x120/pipo-enemy038b.png', 
                 'sounds/BattleSounds/RandomBattle3.mp3', ranndomBattle3, screen, player)
+            if battle == False:
+                bouken_flg = False
+                break
             battle_list[2] = battle
         
         if int(player.posX/GS) == 3 and int(player.posY/GS) == 21 and battle_list[4]== False:
@@ -259,6 +323,9 @@ def main():
             battle = Battle(
                 'images/Characters/enemys/pipo-enemy46set/120x120/pipo-enemy034.png', 
                 'sounds/BattleSounds/RandomBattle5.mp3', quest, screen, player)
+            if battle == False:
+                bouken_flg = False
+                break
             battle_list[4] = battle
             map.draw_map(screen, player.posX, player.posY)
             player.display(screen)
@@ -284,6 +351,9 @@ def main():
             battle = Battle(
                 'images/Characters/enemys/pipo-enemy46set/120x120/pipo-enemy042a.png', 
                 'sounds/BattleSounds/RandomBattle4.mp3', ranndomBattle4, screen, player)
+            if battle == False:
+                bouken_flg = False
+                break
             battle_list[3] = battle
             map.draw_map(screen, player.posX, player.posY)
             player.display(screen)

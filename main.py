@@ -16,6 +16,7 @@ from Modules import game_tyutorial
 from Modules import tutorial
 from Modules import Syokyu
 from Modules import Tyukyu
+from Modules import Zyoukyu
 
 class TitleText:
     def __init__(self, text, col_tuple):
@@ -75,7 +76,7 @@ class SelectCorseCarsol:
                             break
 def main():
     pygame.init()
-    font = pygame.font.Font('font_data/PixelMplus-20130602/PixelMplus12-Regular.ttf', 20)
+    font = pygame.font.Font('font_data/PixelMplus-20130602/PixelMplus10-Regular.ttf', 20)
     font.set_bold(True)
     width = 800 #screeen
     height = 640
@@ -242,6 +243,10 @@ def main():
                 if cours == 3:#上級
                     yes_se.play()
                     print("上級コース button pressed!!")
+                    mixer.music.stop()
+                    Zyoukyu.main()
+                    mixer.music.load('sounds/OpeningThema/8bit29.mp3')
+                    mixer.music.play(-1)
                 if cours == 4:#もどる
                     no_se.play()
                     title_page = True

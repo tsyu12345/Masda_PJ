@@ -87,7 +87,7 @@ class OneLineMsgBox(MsgBox):
             screen.blit(self.text, (self.points[0]+15, self.points[1]+ 15))
             #print("blited")
             pygame.display.update()
-            #pygame.time.wait(30)
+            pygame.time.wait(30)
             self.frame += 1
             self.text = self.font.render(self.msg_list[self.index][0:self.frame], True, (255, 255, 255))
             if self.frame <= len(self.msg_list[self.msg_index]):
